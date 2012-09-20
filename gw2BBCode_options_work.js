@@ -6,3 +6,5 @@
 	var show_gw2Wiki = 2;
 	
 	var showOnClick = show_gw2Wiki;
+	
+	var incrementalSearch = true;

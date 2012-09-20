@@ -1,5 +1,6 @@
 (function() {
 
+	var gw2DBMap        = {};
 	var img_host        = "https://s3-eu-west-1.amazonaws.com/amber.gengo.pl/gw2_images";
 	//var img_host        = "../dist/gw2_images";
 	var gw2DB_Url       = "http://www.gw2db.com";
@@ -62,8 +63,17 @@
 			}
 		});
 	}
+
+	function getKeyFromName(gw2ElementName) {
+		var match = /(\w)/.exec(gw2ElementName);
+		if (match)
+			return match[1].toLowerCase();
+		return "";	
+	}
 	
 	function initElements() {
+		var key;
+		var arr;
 		for (var i = 0; i < gw2Elements.length; i++) {
 			gw2Elements[i].type = element_type[gw2Elements[i].t];
 			
@@ -73,6 +83,14 @@
 					"<div class='db-tooltip db-tooltip-skill'><div class='db-description'><dl class='db-summary'>"
 				   +"<dt class='db-title'>{0}</dt></dl><p>{1}</p></div></div>".format(gw2Elements[i].n, gw2Elements[i].td))
 			}
+			
+			key = getKeyFromName(gw2Elements[i].n);
+			arr = gw2DBMap[key];
+			if (!arr) {
+				arr = new Array();
+				gw2DBMap[key] = arr;	
+			}
+			arr.push(gw2Elements[i]);
 		}
 	}
 	
@@ -85,6 +103,7 @@
 	function gw2BBCode() {
 		processExclusion(/\[/g, '{#}');
 		try {
+			//$($("*").get().reverse()).each(function() {
 			$(".gw2BBCode").each(function() {
 				processMacros(this);
 				processGw2BBCode(this);
@@ -96,27 +115,33 @@
 	
 	function processMacros(obj) {
 		var myRegexp = /\[(@?)(.*?)(\.\d+)?\]/g;
-		var match = myRegexp.exec(obj.innerHTML);
+		var text = obj.innerHTML;
+		var match = myRegexp.exec(text);
 		while (match != null) {
 			var newContent = getNewContentForMacro(match[2], match[1], (match[3] || "1").replace(".", ""));
 			if (newContent != '') {
-				obj.innerHTML = obj.innerHTML.replace(match[0], newContent);
+				text = text.replace(match[0], newContent);
 			}
-			match = myRegexp.exec(obj.innerHTML);
+			match = myRegexp.exec(text);
 		}
+		if (obj.innerHTML != text)
+			obj.innerHTML = text;
 	}
 	
 	function processGw2BBCode(obj) {
 		var myRegexp = /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g;
-		var match = myRegexp.exec(obj.innerHTML);
+		var text = obj.innerHTML;
+		var match = myRegexp.exec(text);
 		while (match != null) {
 			var newContent = getNewContentFor(match[3], match[1], 
 				(match[2] ? match[2].replace(":", "") + 's':match[2]), 
 				(match[4] || "1").replace(".", ""));
 			if (newContent != '')
-				obj.innerHTML = obj.innerHTML.replace(match[0], newContent);
-			match = myRegexp.exec(obj.innerHTML);
+				text = text.replace(match[0], newContent);
+			match = myRegexp.exec(text);
 		}
+		if (obj.innerHTML != text)
+			obj.innerHTML = text;
 	}
 	
 	function processExclusion(a, b) {
@@ -126,7 +151,7 @@
 	}
 	
 	function getNewContentFor(gw2ElementName, showAsTest, forceType, forceIdx) {
-		var gw2Element = findGw2ElementByName(gw2Elements, gw2ElementName, forceType, forceIdx);
+		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx);
 		if (gw2Element == null) return "";
 		return newContentForGw2Element(gw2Element, showAsTest);
 	}
@@ -187,11 +212,13 @@
 	
 	function findGw2ElementByName(array, gw2ElementName, forceType, forceIdx) {
 		forceIdx = forceIdx || 1;
-		for (var i = 0; i < array.length; i++)
-			if (array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0 && 
-			   ((forceType || "") == "" || array[i].type == forceType) &&
-			   (forceIdx-- <= 1))
-				return array[i];
+		if (array)
+			for (var i = 0; i < array.length; i++)
+				if (((incrementalSearch && array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0) ||
+				    (!incrementalSearch && array[i].n.toLowerCase() == gw2ElementName.toLowerCase())) && 
+				   ((forceType || "") == "" || array[i].type == forceType) &&
+				   (forceIdx-- <= 1))
+					return array[i];
 		return null;
 	}
 	
