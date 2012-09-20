@@ -6,8 +6,9 @@
 	var gw2DB_Url       = "http://www.gw2db.com";
 	var wiki_Url        = "http://wiki.guildwars2.com/wiki";
 	var gw2DB_PopupHost = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
-	var popup_style     = "http://static-ascalon.cursecdn.com/current/skins/Ascalon/css/tooltip.css";
-	//var popup_style     = "https://s3-eu-west-1.amazonaws.com/amber.gengo.pl/tooltip.css";
+	//var popup_style     = "http://static-ascalon.cursecdn.com/current/skins/Ascalon/css/tooltip.css";
+	var popup_style     = "https://s3-eu-west-1.amazonaws.com/amber.gengo.pl/tooltip.css";
+	//var popup_style     = "../dist/tooltip.css";
 	
 	function init() {
 		$(includeTo.join(',')).addClass('gw2BBCode');
@@ -181,11 +182,11 @@
 	}
 	
 	function get_gw2DBElement_name(gw2ElementName) {
-		return gw2ElementName.toLowerCase().replace(' ', '-').replace(/['"!]/g, "");
+		return gw2ElementName.toLowerCase().replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
 	function get_wikiElement_name(gw2ElementName) {
-		return gw2ElementName.replace(' ', '_').replace(/['"!]/g, "");
+		return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
 	function getNewContentForMacro(macroName, showAsTest, forceIdx) {
@@ -271,18 +272,18 @@
 
 	
 	function calculatePopupPosition() {
-		var spacer = 3;
 		var top  = $(popup).css("top").replace("px", "");
 		var left = $(popup).css("left").replace("px", "");
 		if (popup_info.dispatcher) {
 			dispatcher = popup_info.dispatcher;
-			var newTop = Math.max(spacer, dispatcher.offsetTop +computeHeightOf(dispatcher) +spacer);
-			if (newTop > $(window).height() +window.scrollY -popup.offsetHeight -spacer)
-				newTop = dispatcher.offsetTop -popup.offsetHeight -spacer;
+				
+			var newTop = Math.max(1, $(dispatcher).offset().top +$(dispatcher).height() +1);
+			if (newTop > $(window).height() +$(window).scrollTop() -$(popup).outerHeight() -3)
+				newTop = $(dispatcher).offset().top +$(dispatcher).height() -computeHeightOf(dispatcher) -$(popup).outerHeight() -3;
 			
-			var newLeft = dispatcher.offsetLeft;
-			if (newLeft > $(window).width() +window.scrollX -367/*popup.offsetWidth*/)
-				newLeft =  Math.min(left, dispatcher.offsetLeft +dispatcher.offsetWidth -367/*popup.offsetWidth*/);
+			var newLeft = $(dispatcher).offset().left;
+			if (newLeft > $(window).width() +$(window).scrollLeft() -367)
+				newLeft =  Math.min(left, $(dispatcher).offset().left +$(dispatcher).outerWidth() -367);
 
 			$(popup).css("top", newTop);
 			$(popup).css("left", newLeft);
@@ -299,6 +300,7 @@
 	
 	function showPopup(msg) {
 		tndoHide = false;
+		$(popup).css('display', 'none');
 		$(popup).html( msg );
    		$(".p-tooltip-image,.db-image").css('display', 'none');
 		calculatePopupPosition();
