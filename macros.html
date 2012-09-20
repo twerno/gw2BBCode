@@ -156,6 +156,7 @@ var weaponMacros = [
 {n:"Wa:Sword/Sword", m:[901,904,5546,5547,1374]},
 {n:"Wa:Sword/Warhorn", m:[901,904,5546,405,514]}];
 
+
 	function sortMacros(){
 		weaponMacros.sort(compare);
 		printMacros();
@@ -163,7 +164,16 @@ var weaponMacros = [
 	
 	function printMacros() {
 		for (var i = 0; i < weaponMacros.length; i++) {
-			document.write("{n:\""+weaponMacros[i].n+"\", m:["+weaponMacros[i].m.toString()+"]},</BR>");
+
+			document.write(
+				"{n:\""+weaponMacros[i].n.replace(/\"/g, "\\\"") +"\""
+				+(weaponMacros[i].id  ? ", id:"+weaponMacros[i].id +"" : "")
+				+(weaponMacros[i].m  ? ", m:["+weaponMacros[i].m.toString() +"]" : "")
+				+(weaponMacros[i].t  ? ", t:'"+weaponMacros[i].t +"'" : "")
+				+(weaponMacros[i].mt ? ", mt:"+weaponMacros[i].mt : "")
+				+(weaponMacros[i].ti ? ", ti:"+weaponMacros[i].ti : "") 
+				+(weaponMacros[i].td ? ", td:\""+weaponMacros[i].td +"\"": "") 
+				+"},</BR>");
 		}
 	}
 

@@ -66,6 +66,13 @@
 	function initElements() {
 		for (var i = 0; i < gw2Elements.length; i++) {
 			gw2Elements[i].type = element_type[gw2Elements[i].t];
+			
+			if(gw2Elements[i].t == "tr") {
+				saveInCache(gw2Elements[i].type, 
+					gw2Elements[i].id, 
+					"<div class='db-tooltip db-tooltip-skill'><div class='db-description'><dl class='db-summary'>"
+				   +"<dt class='db-title'>{0}</dt></dl><p>{1}</p></div></div>".format(gw2Elements[i].n, gw2Elements[i].td))
+			}
 		}
 	}
 	
@@ -142,7 +149,10 @@
 	}
 	
 	function getImageUrl(gw2Element) {
-		return "{0}/{1}/{2}.png".format(img_host, gw2Element.type, gw2Element.id);
+		if (gw2Element.t == 'tr') 
+			return "{0}/{1}/{2}.png".format(img_host, gw2Element.type, gw2Element.ti); /*trait image*/
+		else
+			return "{0}/{1}/{2}.png".format(img_host, gw2Element.type, gw2Element.id);
 	}
 	
 	function get_gw2DBElement_name(gw2ElementName) {
@@ -286,10 +296,10 @@
 		var data_fromCache = getFromCache(type, id);
 	
 		if (data_fromCache) {
-			showPopup(formatResult(data_fromCache));
+			showPopup(data_fromCache);
 		} else {
 			$.getJSON(gw2DB_PopupHost.format(type, id), function(data) {
-				saveInCache(type, id, data);
+				saveInCache(type, id, formatResult(data));
 				if (popup_info.id == -1 ||
 					popup_info.id != id ||
 					popup_info.type != type) return;
