@@ -26,4 +26,4 @@ How to use it ?
 	
 Do check examples and instalation guide 
 ---------------------------------------
-at http://gw2bbcode.s3-website-eu-west-1.amazonaws.com/
+at http://gw2bbcode.pl
