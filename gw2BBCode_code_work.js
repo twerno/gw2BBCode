@@ -1,13 +1,13 @@
 (function() {
 
 	var gw2DBMap        = {};
-	var img_host        = "https://s3-eu-west-1.amazonaws.com/amber.gengo.pl/gw2_images";
+	var img_host        = "https://s3-eu-west-1.amazonaws.com/gw2bbcode/gw2_images";
 	//var img_host        = "../dist/gw2_images";
 	var gw2DB_Url       = "http://www.gw2db.com";
 	var wiki_Url        = "http://wiki.guildwars2.com/wiki";
 	var gw2DB_PopupHost = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
 	//var popup_style     = "http://static-ascalon.cursecdn.com/current/skins/Ascalon/css/tooltip.css";
-	var popup_style     = "https://s3-eu-west-1.amazonaws.com/amber.gengo.pl/tooltip.css";
+	var popup_style     = "https://s3-eu-west-1.amazonaws.com/gw2bbcode/tooltip.css";
 	//var popup_style     = "../dist/tooltip.css";
 	
 	function init() {
@@ -119,7 +119,7 @@
 		var text = obj.innerHTML;
 		var match = myRegexp.exec(text);
 		while (match != null) {
-			var newContent = getNewContentForMacro(match[2], match[1], (match[3] || "1").replace(".", ""));
+			var newContent = getNewContentForMacro(match[2], match[1], element_type['s'], (match[3] || "1").replace(".", ""));
 			if (newContent != '') {
 				text = text.replace(match[0], newContent);
 			}
@@ -189,12 +189,12 @@
 		return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
-	function getNewContentForMacro(macroName, showAsTest, forceIdx) {
+	function getNewContentForMacro(macroName, showAsTest, forceType, forceIdx) {
 		var macro = findGw2ElementByName(macros, macroName, '', forceIdx);
 		if (macro == null) return "";
 		result = "";
 		for (var i = 0; i < macro.m.length; i++) {
-			var gw2Element = findGw2ElementById(gw2Elements, macro.m[i]);
+			var gw2Element = findGw2ElementById(gw2Elements, macro.m[i], forceType);
 			result += (i != 0 && showAsTest ? " " : "");
 			if (gw2Element)
 				result += newContentForGw2Element(gw2Element, showAsTest);
@@ -204,9 +204,9 @@
 		return result;
 	}
 
-	function findGw2ElementById(array, gw2ElementId) {
+	function findGw2ElementById(array, gw2ElementId, forceType) {
 		for (var i = 0; i < array.length; i++)
-			if (array[i].id == gw2ElementId)
+			if (array[i].id == gw2ElementId && ((forceType || "") == "" || array[i].type == forceType))
 				return array[i];
 		return null;
 	}
@@ -215,8 +215,8 @@
 		forceIdx = forceIdx || 1;
 		if (array)
 			for (var i = 0; i < array.length; i++)
-				if (((incrementalSearch && array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0) ||
-				    (!incrementalSearch && array[i].n.toLowerCase() == gw2ElementName.toLowerCase())) && 
+				if (((incrementalSearch && gw2ElementName.length >= 4 && array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0) ||
+				    ((!incrementalSearch || gw2ElementName.length <= 4) && array[i].n.toLowerCase() == gw2ElementName.toLowerCase())) && 
 				   ((forceType || "") == "" || array[i].type == forceType) &&
 				   (forceIdx-- <= 1))
 					return array[i];
@@ -277,9 +277,9 @@
 		if (popup_info.dispatcher) {
 			dispatcher = popup_info.dispatcher;
 				
-			var newTop = Math.max(1, $(dispatcher).offset().top +$(dispatcher).height() +1);
-			if (newTop > $(window).height() +$(window).scrollTop() -$(popup).outerHeight() -3)
-				newTop = $(dispatcher).offset().top +$(dispatcher).height() -computeHeightOf(dispatcher) -$(popup).outerHeight() -3;
+			var newTop = Math.max(1, $(dispatcher).offset().top +$(dispatcher).height());
+			if (newTop > $(window).height() +$(window).scrollTop() -$(popup).outerHeight() -5)
+				newTop = $(dispatcher).offset().top +$(dispatcher).height() -computeHeightOf(dispatcher) -$(popup).outerHeight() -5;
 			
 			var newLeft = $(dispatcher).offset().left;
 			if (newLeft > $(window).width() +$(window).scrollLeft() -367)
