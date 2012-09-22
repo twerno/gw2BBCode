@@ -105,43 +105,34 @@
 		try {
 			//$($("*").get().reverse()).each(function() {
 			$(".gw2BBCode").each(function() {
-				processMacros(this);
-				processGw2BBCode(this);
+				/* process macros */
+				processContent(this, /\[(@?)(.*?)(\.\d+)?\]/g, function(match) {
+					return genMacroContent(match[2], match[1], element_type['s'], (match[3] || "1").replace(".", ""));
+				});
+
+				/* process gw2BBCode */
+				processContent(this, /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g, function(match) {
+					return genBBCodeContent(match[3], match[1], 
+							(match[2] ? match[2].replace(":", "") + 's':match[2]), 
+							(match[4] || "1").replace(".", ""));
+				});
 			});
 		} finally {
 			processExclusion(/\{#\}/g, '[');
 		}
 	}
 	
-	function processMacros(obj) {
-		var myRegexp = /\[(@?)(.*?)(\.\d+)?\]/g;
-		var text = obj.innerHTML;
-		var match = myRegexp.exec(text);
+	function processContent(element, regExpr, genContentForMatch) {
+		var text = element.innerHTML;
+		var match = regExpr.exec(text);
 		while (match != null) {
-			var newContent = getNewContentForMacro(match[2], match[1], element_type['s'], (match[3] || "1").replace(".", ""));
-			if (newContent != '') {
-				text = text.replace(match[0], newContent);
-			}
-			match = myRegexp.exec(text);
-		}
-		if (obj.innerHTML != text)
-			obj.innerHTML = text;
-	}
-	
-	function processGw2BBCode(obj) {
-		var myRegexp = /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g;
-		var text = obj.innerHTML;
-		var match = myRegexp.exec(text);
-		while (match != null) {
-			var newContent = getNewContentFor(match[3], match[1], 
-				(match[2] ? match[2].replace(":", "") + 's':match[2]), 
-				(match[4] || "1").replace(".", ""));
+			var newContent = genContentForMatch(match);
 			if (newContent != '')
 				text = text.replace(match[0], newContent);
-			match = myRegexp.exec(text);
+			match = regExpr.exec(text);
 		}
-		if (obj.innerHTML != text)
-			obj.innerHTML = text;
+		if (element.innerHTML != text)
+			element.innerHTML = text;
 	}
 	
 	function processExclusion(a, b) {
@@ -152,13 +143,13 @@
 		});
 	}
 	
-	function getNewContentFor(gw2ElementName, showAsTest, forceType, forceIdx) {
+	function genBBCodeContent(gw2ElementName, showAsTest, forceType, forceIdx) {
 		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx);
 		if (gw2Element == null) return "";
-		return newContentForGw2Element(gw2Element, showAsTest);
+		return genGw2ElementContent(gw2Element, showAsTest);
 	}
 	
-	function newContentForGw2Element(gw2Element, showAsTest) {
+	function genGw2ElementContent(gw2Element, showAsTest) {
 		if (showAsTest)
 			return ("<a href='{0}' class='gw2DBTooltip gw2DB{1}_{2}'>{3}</a>")
 				.format(getDescriptionUrl(gw2Element), gw2Element.type, gw2Element.id, gw2Element.n);
@@ -190,7 +181,7 @@
 		return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
-	function getNewContentForMacro(macroName, showAsTest, forceType, forceIdx) {
+	function genMacroContent(macroName, showAsTest, forceType, forceIdx) {
 		var macro = findGw2ElementByName(macros, macroName, '', forceIdx);
 		if (macro == null) return "";
 		result = "";
@@ -198,7 +189,7 @@
 			var gw2Element = findGw2ElementById(gw2Elements, macro.m[i], forceType);
 			result += (i != 0 && showAsTest ? " " : "");
 			if (gw2Element)
-				result += newContentForGw2Element(gw2Element, showAsTest);
+				result += genGw2ElementContent(gw2Element, showAsTest);
 			else
 				result += "[m:"+macro.m[i]+"]";
 		}
