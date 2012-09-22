@@ -1,4 +1,4 @@
-(function() {
+//(function() {
 
 	var gw2DBMap        = {};
 	var img_host        = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2_images";
@@ -114,6 +114,19 @@
 		}
 	}
 	
+	function gw2BBCodeAt(element) {
+		if (!element) return;
+		processExclusionAt(/\[/g, '{#}', element);
+		try {
+			$(element).each(function() {
+				processMacros(this);
+				processGw2BBCode(this);
+			});
+		} finally {
+			processExclusionAt(/\{#\}/g, '[', element);
+		}
+	}
+	
 	function processMacros(obj) {
 		var myRegexp = /\[(@?)(.*?)(\.\d+)?\]/g;
 		var text = obj.innerHTML;
@@ -147,7 +160,17 @@
 	
 	function processExclusion(a, b) {
 		$((".gw2BBCode {0}".format(excludeFrom.join(',')))).each(function() {
-			this.innerHTML = this.innerHTML.replace(a, b);
+			var text = this.innerHTML.replace(a, b);
+			if (text != this.innerHTML)
+				this.innerHTML = text;
+		});
+	}
+	
+	function processExclusionAt(a, b, element) {
+		$(element).find("{0}".format(excludeFrom.join(','))).each(function() {
+			var text = this.innerHTML.replace(a, b);
+			if (text != this.innerHTML)
+				this.innerHTML = text;
 		});
 	}
 	
@@ -359,4 +382,4 @@
 	addEvent(window, "load", setTimeout(function() {
 		init();
 	}, 300));
-}).call(this);
+//}).call(this);
