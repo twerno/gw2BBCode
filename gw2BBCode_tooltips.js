@@ -83,8 +83,8 @@
 		setTimeout(hidePopup, milisec);
 	}
 	
-	function hidePopup() {
-		if (!tndoHide) return;
+	function hidePopup(force) {
+		if (!force && !tndoHide) return;
 		tndoHide = false;
 		popup_info = {id:-1, type:"", dispatcher:null};
 		$(popup).css('display', 'none');

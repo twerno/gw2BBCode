@@ -168,6 +168,7 @@
 	function weaponSwapHandler(event) {
 		$(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
 			$(this).css('display', $(this).css('display') == 'inline' ? 'none' : 'inline' );
+			hidePopup(true);
 		});
 	}
 	
