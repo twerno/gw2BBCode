@@ -4,7 +4,7 @@
 		try {
 			$(element).each(function() {
 				gw2BBCodeAt(this);
-				initPopups();
+				registerTooltipsHandlers();
 				registerWeaponSwapHandlers();
 			});
 		} finally {

@@ -47,13 +47,6 @@
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 	
-	function addEvent(obj, evType, fn){ 
-		if (obj.addEventListener){ 
-			obj.addEventListener(evType, fn, false); 
-		} else if (obj.attachEvent)
-			r = obj.attachEvent("on"+evType, fn); 
-	}
-	
 	function addPopup2Gw2DBLinks() {
 		$(".gw2BBCode a").each(function() {
 			if (this.host == 'www.gw2db.com') {
@@ -167,13 +160,15 @@
 	
 	function weaponSwapHandler(event) {
 		$(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
-			$(this).css('display', $(this).css('display') == 'inline' ? 'none' : 'inline' );
-			hidePopup(true);
+			$(this).css('display', ($(this).css('display') == 'inline' ? 'none' : 'inline') );
 		});
+		hidePopup(true);
 	}
 	
 	function registerWeaponSwapHandlers() {
-		$('.gw2BBCode_weaponSwap').click(weaponSwapHandler);
+		$('.gw2BBCode_weaponSwap')
+			.unbind('click')
+			.click(weaponSwapHandler);
 	}
 	
 	function weaponSetContent(profAlias, setName, stance, showAsText) {
@@ -263,6 +258,4 @@
 		return null;
 	}
 	
-	addEvent(window, "load", setTimeout(function() {
-		init();
-	}, 300));
+	$(window).load(function() {setTimeout(function() {init();}, 300)});

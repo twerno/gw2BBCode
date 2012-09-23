@@ -6,19 +6,32 @@
 	var popup_cache = [];
 
 	function initPopups() {
-		$(".gw2DBTooltip")
-			.mouseenter(mouseEnterHandler)
-			.mouseleave(function(eventObject) {
-				hideIn(150);
-			});
-
 		popup = document.createElement('div');
 		popup.setAttribute("id", "db-tooltip-container");
 		document.getElementsByTagName("body")[0].appendChild(popup);
+		
+		registerTooltipsHandlers();
+	}
+	
+	function registerTooltipsHandlers() {
+		$(".gw2DBTooltip").each(function() {registerTooltipsHandler(this)});
+			
 		$(popup)
+			.unbind('mouseenter')
 			.mouseenter(function(eventObject) {
 				tndoHide = false;
 			})
+			.unbind('mouseleave')
+			.mouseleave(function(eventObject) {
+				hideIn(150);
+			});
+	}
+	
+	function registerTooltipsHandler(element) {
+		$(element)
+			.unbind('mouseenter')
+			.mouseenter(mouseEnterHandler)
+			.unbind('mouseleave')
 			.mouseleave(function(eventObject) {
 				hideIn(150);
 			});
@@ -106,7 +119,7 @@
 			});
 		}	
 	}
-	
+
 	function getFromCache(type, id) {
 		for (var i = 0; i < popup_cache.length; i++) {
 			if (popup_cache[i].id == id && popup_cache[i].type == type)
