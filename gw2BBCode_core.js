@@ -16,6 +16,7 @@
 		loadStyle(popup_style);
 		gw2BBCode();
 		initPopups();
+		registerWeaponSwapHandlers();
 	}	
 	
 	/*
@@ -104,22 +105,29 @@
 		processExclusion(/\[/g, '{#}');
 		try {
 			//$($("*").get().reverse()).each(function() {
-			$(".gw2BBCode").each(function() {
-				/* process macros */
-				processContent(this, /\[(@?)(.*?)(\.\d+)?\]/g, function(match) {
-					return genMacroContent(match[2], match[1], element_type['s'], (match[3] || "1").replace(".", ""));
-				});
-
-				/* process gw2BBCode */
-				processContent(this, /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g, function(match) {
-					return genBBCodeContent(match[3], match[1], 
-							(match[2] ? match[2].replace(":", "") + 's':match[2]), 
-							(match[4] || "1").replace(".", ""));
-				});
-			});
+			$(".gw2BBCode").each(function() { gw2BBCodeAt(this); });
 		} finally {
 			processExclusion(/\{#\}/g, '[');
 		}
+	}
+	
+	function gw2BBCodeAt(element) {
+		/* process macros */
+		processContent(element, /\[(@?)(.*?)(\.\d+)?\]/g, function(match) {
+			return genMacroContent(match[2], match[1]=="@", element_type['s'], (match[3] || "1").replace(".", ""));
+		});
+
+		/* process gw2BBCode */
+		processContent(element, /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g, function(match) {
+			return genBBCodeContent(match[3], match[1]=="@", 
+				(match[2] ? match[2].replace(":", "") + 's':match[2]), 
+				(match[4] || "1").replace(".", ""));
+		});
+	
+		/* process weapons sets */
+		processContent(element, /\[(@?)(\w+):(\w+(\/\w+)?)(\|(\w+(\/\w+)?))?(:(\w+))?\]/g, function(match) {
+			return genWeaponSetsContent(match[2]||"", match[3]||"", match[6]||"", match[9]||"", match[1]=="@");
+		}); 
 	}
 	
 	function processContent(element, regExpr, genContentForMatch) {
@@ -143,14 +151,48 @@
 		});
 	}
 	
-	function genBBCodeContent(gw2ElementName, showAsTest, forceType, forceIdx) {
-		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx);
-		if (gw2Element == null) return "";
-		return genGw2ElementContent(gw2Element, showAsTest);
+	function genWeaponSetsContent(profAlias, set1, set2, stance, showAsText) {
+		var set1_content = weaponSetContent(profAlias, set1, stance, showAsText);
+		var set2_content = weaponSetContent(profAlias, set2, stance, showAsText);
+		if (set1_content == "" || (set2 != "" && set2_content == "")) return "";
+		
+		var tnSet2 = set2_content!="";
+		return "<div class='gw2BBCode_weaponSetWraper'>{0}<div class='gw2BBCode_weaponSet'>{1}</div>{2}{3}{4}</div>"
+			.format((tnSet2 ? "<div class='gw2BBCode_weaponSwap'></div>" : ""),
+				set1_content,
+				(tnSet2 ? "<div class='gw2BBCode_weaponSet' style='display:none;'>" : ""),
+				set2_content,
+				(tnSet2 ? "</div>" : ""));
 	}
 	
-	function genGw2ElementContent(gw2Element, showAsTest) {
-		if (showAsTest)
+	function weaponSwapHandler(event) {
+		$(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
+			$(this).css('display', $(this).css('display') == 'inline' ? 'none' : 'inline' );
+		});
+	}
+	
+	function registerWeaponSwapHandlers() {
+		$('.gw2BBCode_weaponSwap').click(weaponSwapHandler);
+	}
+	
+	function weaponSetContent(profAlias, setName, stance, showAsText) {
+		var setKey = "{0}:{1}{2}".format(profAlias || "", setName || "", ((stance||"")=="" ? "" : ":"+stance));
+		var macro  = findGw2ElementByName(weaponMacros, setKey, '', 1);
+		if (macro)
+			return genMacroContent2(macro.m, showAsText, element_type['s'], 1);
+		else if (setName != "")
+			return "[{0}{1}]".format((showAsText ? "@" : ""), setKey);
+		else return "";	
+	}
+	
+	function genBBCodeContent(gw2ElementName, showAsText, forceType, forceIdx) {
+		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx);
+		if (gw2Element == null) return "";
+		return genGw2ElementContent(gw2Element, showAsText);
+	}
+	
+	function genGw2ElementContent(gw2Element, showAsText) {
+		if (showAsText)
 			return ("<a href='{0}' class='gw2DBTooltip gw2DB{1}_{2}'>{3}</a>")
 				.format(getDescriptionUrl(gw2Element), gw2Element.type, gw2Element.id, gw2Element.n);
 		else
@@ -181,17 +223,22 @@
 		return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
-	function genMacroContent(macroName, showAsTest, forceType, forceIdx) {
+	function genMacroContent(macroName, showAsText, forceType, forceIdx) {
 		var macro = findGw2ElementByName(macros, macroName, '', forceIdx);
-		if (macro == null) return "";
-		result = "";
-		for (var i = 0; i < macro.m.length; i++) {
-			var gw2Element = findGw2ElementById(gw2Elements, macro.m[i], forceType);
-			result += (i != 0 && showAsTest ? " " : "");
+		if (!macro) return "";
+		return genMacroContent2(macro.m, showAsText, forceType, forceIdx);
+	}
+	
+	function genMacroContent2(elementIds_Array, showAsText, forceType, forceIdx) {
+		if (!elementIds_Array) return "";
+		var result = "";
+		for (var i = 0; i < elementIds_Array.length; i++) {
+			var gw2Element = findGw2ElementById(gw2Elements, elementIds_Array[i], forceType);
+			result += (i != 0 && showAsText ? " " : "");
 			if (gw2Element)
-				result += genGw2ElementContent(gw2Element, showAsTest);
+				result += genGw2ElementContent(gw2Element, showAsText);
 			else
-				result += "[m:"+macro.m[i]+"]";
+				result += "[m:"+elementIds_Array[i]+"]";
 		}
 		return result;
 	}

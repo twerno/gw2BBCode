@@ -1,11 +1,11 @@
-	function gw2BBCodeAt(element) {
+	function updateElement(element) {
 		if (!element) return;
 		processExclusionAt(/\[/g, '{#}', element);
 		try {
 			$(element).each(function() {
-				processMacros(this);
-				processGw2BBCode(this);
+				gw2BBCodeAt(this);
 				initPopups();
+				registerWeaponSwapHandlers();
 			});
 		} finally {
 			processExclusionAt(/\{#\}/g, '[', element);
@@ -20,5 +20,4 @@
 		});
 	}
 	
-	window['gw2BBCodeAt']        = gw2BBCodeAt;
-	window['processExclusionAt'] = processExclusionAt;
+	window['updateElement'] = updateElement;

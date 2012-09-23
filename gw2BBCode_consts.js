@@ -1491,8 +1491,9 @@ var gw2Elements = [
 	{id:1614, n:"Zephyr's Speed", t:'tr', ti:0, td:"Move 10% faster while attuned to air."},
 	{id:2388, n:"Zephyr's Speed", t:'tr', ti:0, td:"You and your pet gain 2 seconds of quickness when you swap pets."}];
 
+var macros = [];
 
-var macros = [
+var weaponMacros = [
 	{n:"El:Dagger/Dagger", m:[1172,523,4239,6208,1857]},
 	{n:"El:Dagger/Dagger:air", m:[328,4242,1175,1179,6204]},
 	{n:"El:Dagger/Dagger:earth", m:[6206,1173,1859,6207,1166]},
