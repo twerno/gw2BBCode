@@ -1,5 +1,4 @@
 
-	var _gaq            = _gaq || [];
 	var gw2DBMap        = {};
 	var img_host        = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2_images";
 	//var img_host        = "../dist/gw2_images";
@@ -263,9 +262,9 @@
 	}
 	
 	function initGoogleAnalitics() {
-	_gaq.push(
-		['x._setAccount', 'UA-35005283-2'],
-		['x._trackPageview']);
+		_gaq.push(
+			['x._setAccount', 'UA-35005283-2'],
+			['x._trackPageview']);
 	
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
