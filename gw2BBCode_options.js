@@ -9,3 +9,6 @@
 	var showOnClick = show_gw2DB;
 	
 	var incrementalSearch = true;
+	
+	//var gw2BBCode_custom_prefix = "gw2:";
+	var gw2BBCode_custom_prefix = "";

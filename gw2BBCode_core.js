@@ -107,19 +107,22 @@
 	
 	function gw2BBCodeAt(element) {
 		/* process macros */
-		processContent(element, /\[(@?)(.*?)(\.\d+)?\]/g, function(match) {
+		var regExpr = new RegExp("{0}\\[(@?)(.*?)(\\.\\d+)?\\]".format(gw2BBCode_custom_prefix), "g");
+		processContent(element, regExpr, function(match) {
 			return genMacroContent(match[2], match[1]=="@", element_type['s'], (match[3] || "1").replace(".", ""));
 		});
 
 		/* process gw2BBCode */
-		processContent(element, /\[(@?)(skill:|trait:|boon:|condition:)?(.*?)(\.\d+)?\]/g, function(match) {
+		regExpr = new RegExp("\\[{0}(@?)(skill:|trait:|boon:|condition:)?(.*?)(\\.\\d+)?\\]".format(gw2BBCode_custom_prefix), "g");
+		processContent(element, regExpr, function(match) {
 			return genBBCodeContent(match[3], match[1]=="@", 
 				(match[2] ? match[2].replace(":", "") + 's':match[2]), 
 				(match[4] || "1").replace(".", ""));
 		});
 	
 		/* process weapons sets */
-		processContent(element, /\[(@?)(\w+):(\w+(\/\w+)?)(\|(\w+(\/\w+)?))?(:(\w+))?\]/g, function(match) {
+		regExpr = new RegExp("\\[{0}(@?)(\\w+):(\\w+(/\\w+)?)(\\|(\\w+(/\\w+)?))?(:(\\w+))?\\]".format(gw2BBCode_custom_prefix), "g");
+		processContent(element, regExpr, function(match) {
 			return genWeaponSetsContent(match[2]||"", match[3]||"", match[6]||"", match[9]||"", match[1]=="@");
 		}); 
 	}
