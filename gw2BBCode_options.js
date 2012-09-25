@@ -10,5 +10,4 @@
 	
 	var incrementalSearch = true;
 	
-	//var gw2BBCode_custom_prefix = "gw2:";
-	var gw2BBCode_custom_prefix = "";
+	var gw2BBCode_img_host = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2_images";

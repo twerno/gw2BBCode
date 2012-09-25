@@ -1,7 +1,5 @@
 
 	var gw2DBMap        = {};
-	var img_host        = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2_images";
-	//var img_host        = "../dist/gw2_images";
 	var gw2DB_Url       = "http://www.gw2db.com";
 	var wiki_Url        = "http://wiki.guildwars2.com/wiki";
 	var gw2DB_PopupHost = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
@@ -107,23 +105,23 @@
 	
 	function gw2BBCodeAt(element) {
 		/* process macros */
-		var regExpr = new RegExp("{0}\\[(@?)(.*?)(\\.\\d+)?\\]".format(gw2BBCode_custom_prefix), "g");
+		var regExpr = new RegExp("\\[(gw2:)?(@?)(.*?)(\\.\\d+)?\\]", "g");
 		processContent(element, regExpr, function(match) {
-			return genMacroContent(match[2], match[1]=="@", element_type['s'], (match[3] || "1").replace(".", ""));
+			return genMacroContent(match[3], match[2]=="@", element_type['s'], (match[4] || "1").replace(".", ""));
 		});
 
 		/* process gw2BBCode */
-		regExpr = new RegExp("\\[{0}(@?)(skill:|trait:|boon:|condition:)?(.*?)(\\.\\d+)?\\]".format(gw2BBCode_custom_prefix), "g");
+		regExpr = new RegExp("\\[(gw2:)?(@?)(skill:|trait:|boon:|condition:)?(.*?)(\\.\\d+)?\\]", "g");
 		processContent(element, regExpr, function(match) {
-			return genBBCodeContent(match[3], match[1]=="@", 
-				(match[2] ? match[2].replace(":", "") + 's':match[2]), 
-				(match[4] || "1").replace(".", ""));
+			return genBBCodeContent(match[4], match[2]=="@", 
+				(match[3] ? match[3].replace(":", "") + 's':match[3]), 
+				(match[5] || "1").replace(".", ""));
 		});
 	
 		/* process weapons sets */
-		regExpr = new RegExp("\\[{0}(@?)(\\w+):(\\w+(/\\w+)?)(\\|(\\w+(/\\w+)?))?(:(\\w+))?\\]".format(gw2BBCode_custom_prefix), "g");
+		regExpr = new RegExp("\\[(gw2:)?(@?)(\\w+):(\\w+(/\\w+)?)(\\|(\\w+(/\\w+)?))?(:(\\w+))?\\]", "g");
 		processContent(element, regExpr, function(match) {
-			return genWeaponSetsContent(match[2]||"", match[3]||"", match[6]||"", match[9]||"", match[1]=="@");
+			return genWeaponSetsContent(match[3]||"", match[4]||"", match[7]||"", match[10]||"", match[2]=="@");
 		}); 
 	}
 	
@@ -182,8 +180,6 @@
 		var macro  = findGw2ElementByName(weaponMacros, setKey, '', 1);
 		if (macro)
 			return genMacroContent2(macro.m, showAsText, element_type['s'], 1);
-		else if (setName != "")
-			return "[{0}{1}]".format((showAsText ? "@" : ""), setKey);
 		else return "";	
 	}
 	
@@ -212,9 +208,9 @@
 	
 	function getImageUrl(gw2Element) {
 		if (gw2Element.t == 'tr') 
-			return "{0}/{1}/{2}.png".format(img_host, gw2Element.type, gw2Element.ti); /*trait image*/
+			return "{0}/{1}/{2}.png".format(gw2BBCode_img_host, gw2Element.type, gw2Element.ti); /*trait image*/
 		else
-			return "{0}/{1}/{2}.png".format(img_host, gw2Element.type, gw2Element.id);
+			return "{0}/{1}/{2}.png".format(gw2BBCode_img_host, gw2Element.type, gw2Element.id);
 	}
 	
 	function get_gw2DBElement_name(gw2ElementName) {
