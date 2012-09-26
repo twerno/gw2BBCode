@@ -136,5 +136,7 @@
 	}
 
 	function formatResult(data) {
-		return data["Tooltip"].replace(/<div class="db-image">\s+<img src=".*?\/>\s+<\/div>/g, "");
+		return data["Tooltip"]
+			.replace(/<div class="db-image">\s+<img src=".*?\/>\s+<\/div>/g, "")
+			.replace("<a href=\"", "<a href=\""+gw2DB_Url);
 	}
