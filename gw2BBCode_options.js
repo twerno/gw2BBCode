@@ -16,4 +16,5 @@
 	var gw2DB_PopupHost    = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
 	//var popup_style      = "http://static-ascalon.cursecdn.com/current/skins/Ascalon/css/tooltip.css";
 	var popup_style        = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/tooltip.css";
+	var gw2_styles         = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2BBCode.css";
 	//var popup_style      = "../dist/tooltip.css";

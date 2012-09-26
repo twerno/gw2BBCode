@@ -6,6 +6,7 @@
 		initElements();
 		addPopup2Gw2DBLinks();
 		loadStyle(popup_style);
+		loadStyle(gw2_styles);
 		gw2BBCode();
 		initPopups();
 		registerWeaponSwapHandlers();
