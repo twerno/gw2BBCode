@@ -102,7 +102,8 @@
 		/* process macros */
 		var regExpr = new RegExp("\\[(gw2:)?(@?)(.*?)(\\.\\d+)?\\]", "g");
 		processContent(element, regExpr, function(match) {
-			return genMacroContent(match[3], match[2]=="@", element_type['s'], (match[4] || "1").replace(".", ""));
+			return genMacroContent(match[3], match[2]=="@", element_type['s'], (match[4] || "1").replace(".", ""), 
+				match[1] == "gw2:");
 		});
 
 		/* process gw2BBCode */
@@ -110,13 +111,15 @@
 		processContent(element, regExpr, function(match) {
 			return genBBCodeContent(match[4], match[2]=="@", 
 				(match[3] ? match[3].replace(":", "") + 's':match[3]), 
-				(match[5] || "1").replace(".", ""));
+				(match[5] || "1").replace(".", ""),
+				match[1] == "gw2:");
 		});
 	
 		/* process weapons sets */
 		regExpr = new RegExp("\\[(gw2:)?(@?)(\\w+):(\\w+(/\\w+)?)(\\|(\\w+(/\\w+)?))?(:(\\w+))?\\]", "g");
 		processContent(element, regExpr, function(match) {
-			return genWeaponSetsContent(match[3]||"", match[4]||"", match[7]||"", match[10]||"", match[2]=="@");
+			return genWeaponSetsContent(match[3]||"", match[4]||"", match[7]||"", match[10]||"", match[2]=="@", 
+			match[1] == "gw2:");
 		}); 
 	}
 	
@@ -170,16 +173,16 @@
 			.click(weaponSwapHandler);
 	}
 	
-	function weaponSetContent(profAlias, setName, stance, showAsText) {
+	function weaponSetContent(profAlias, setName, stance, showAsText, allowIncrementalSearch) {
 		var setKey = "{0}:{1}{2}".format(profAlias || "", setName || "", ((stance||"")=="" ? "" : ":"+stance));
-		var macro  = findGw2ElementByName(weaponMacros, setKey, '', 1);
+		var macro  = findGw2ElementByName(weaponMacros, setKey, '', 1, allowIncrementalSearch);
 		if (macro)
 			return genMacroContent2(macro.m, showAsText, element_type['s'], 1);
 		else return "";	
 	}
 	
-	function genBBCodeContent(gw2ElementName, showAsText, forceType, forceIdx) {
-		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx);
+	function genBBCodeContent(gw2ElementName, showAsText, forceType, forceIdx, allowIncrementalSearch) {
+		var gw2Element = findGw2ElementByName(gw2DBMap[getKeyFromName(gw2ElementName)], gw2ElementName, forceType, forceIdx, allowIncrementalSearch);
 		if (gw2Element == null) return "";
 		return genGw2ElementContent(gw2Element, showAsText);
 	}
@@ -216,8 +219,8 @@
 		return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 	}
 	
-	function genMacroContent(macroName, showAsText, forceType, forceIdx) {
-		var macro = findGw2ElementByName(macros, macroName, '', forceIdx);
+	function genMacroContent(macroName, showAsText, forceType, forceIdx, allowIncrementalSearch) {
+		var macro = findGw2ElementByName(macros, macroName, '', forceIdx, allowIncrementalSearch);
 		if (!macro) return "";
 		return genMacroContent2(macro.m, showAsText, forceType, forceIdx);
 	}
@@ -243,12 +246,13 @@
 		return null;
 	}
 	
-	function findGw2ElementByName(array, gw2ElementName, forceType, forceIdx) {
+	function findGw2ElementByName(array, gw2ElementName, forceType, forceIdx, allowIncrementalSearch) {
 		forceIdx = forceIdx || 1;
+		allowIncrementalSearch = (allowIncrementalSearch || false) && incrementalSearch;
 		if (array)
 			for (var i = 0; i < array.length; i++)
-				if (((incrementalSearch && gw2ElementName.length >= 4 && array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0) ||
-				    ((!incrementalSearch || gw2ElementName.length <= 4) && array[i].n.toLowerCase() == gw2ElementName.toLowerCase())) && 
+				if (((allowIncrementalSearch && array[i].n.toLowerCase().indexOf(gw2ElementName.toLowerCase()) == 0) ||
+				    (!allowIncrementalSearch && array[i].n.toLowerCase() == gw2ElementName.toLowerCase())) && 
 				   ((forceType || "") == "" || array[i].type == forceType) &&
 				   (forceIdx-- <= 1))
 					return array[i];
@@ -259,7 +263,7 @@
 		_gaq.push(
 			['x._setAccount', 'UA-35005283-2'],
 			['x._setAllowLinker', true],
-			['x._setDomainName', 'none'],
+			['x._setDomainName', document.domain],
 			['x._trackPageview']);
 	
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
