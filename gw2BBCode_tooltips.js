@@ -14,9 +14,9 @@
 	}
 	
 	function registerTooltipsHandlers() {
-		$(".gw2DBTooltip").each(function() {registerTooltipsHandler(this)});
+		jQuery(".gw2DBTooltip").each(function() {registerTooltipsHandler(this)});
 			
-		$(popup)
+		jQuery(popup)
 			.unbind('mouseenter')
 			.mouseenter(function(eventObject) {
 				tndoHide = false;
@@ -28,7 +28,7 @@
 	}
 	
 	function registerTooltipsHandler(element) {
-		$(element)
+		jQuery(element)
 			.unbind('mouseenter')
 			.mouseenter(mouseEnterHandler)
 			.unbind('mouseleave')
@@ -44,8 +44,8 @@
 		if (popup_info.id == match[2] && 
 		    popup_info.type == match[1] && 
 		   (popup_info.dispatcher === eventObject.currentTarget || popup_info.dispatcher === popup)) return;
-		$(popup).css("top", eventObject.pageY +10);
-		$(popup).css("left",eventObject.pageX +10);
+		jQuery(popup).css("top", eventObject.pageY +10);
+		jQuery(popup).css("left",eventObject.pageX +10);
 
 		popup_info = {id:match[2], type:match[1], dispatcher:eventObject.currentTarget};
 		showPopup("<div class='db-tooltip'><div class='db-description' style='width: auto'>Loading..</div></div>");
@@ -55,27 +55,27 @@
 
 	
 	function calculatePopupPosition() {
-		var top  = $(popup).css("top").replace("px", "");
-		var left = $(popup).css("left").replace("px", "");
+		var top  = jQuery(popup).css("top").replace("px", "");
+		var left = jQuery(popup).css("left").replace("px", "");
 		if (popup_info.dispatcher) {
 			dispatcher = popup_info.dispatcher;
 				
-			var newTop = Math.max(1, $(dispatcher).offset().top +$(dispatcher).height() -3);
-			if (newTop > $(window).height() +$(window).scrollTop() -$(popup).outerHeight() -5)
-				newTop = $(dispatcher).offset().top +$(dispatcher).height() -computeHeightOf(dispatcher) -$(popup).outerHeight() -5;
+			var newTop = Math.max(1, jQuery(dispatcher).offset().top +jQuery(dispatcher).height() -3);
+			if (newTop > jQuery(window).height() +jQuery(window).scrollTop() -jQuery(popup).outerHeight() -5)
+				newTop = jQuery(dispatcher).offset().top +jQuery(dispatcher).height() -computeHeightOf(dispatcher) -jQuery(popup).outerHeight() -5;
 			
-			var newLeft = $(dispatcher).offset().left;
-			if (newLeft > $(window).width() +$(window).scrollLeft() -367)
-				newLeft =  Math.min(left, $(dispatcher).offset().left +$(dispatcher).outerWidth() -367);
+			var newLeft = jQuery(dispatcher).offset().left;
+			if (newLeft > jQuery(window).width() +jQuery(window).scrollLeft() -367)
+				newLeft =  Math.min(left, jQuery(dispatcher).offset().left +jQuery(dispatcher).outerWidth() -367);
 
-			$(popup).css("top", newTop);
-			$(popup).css("left", newLeft);
+			jQuery(popup).css("top", newTop);
+			jQuery(popup).css("left", newLeft);
 		}
 	}
 	
 	function computeHeightOf(obj) {
-		var result = $(obj).height();
-		$(obj).children().each(function() {
+		var result = jQuery(obj).height();
+		jQuery(obj).children().each(function() {
 			result = Math.max(result, computeHeightOf(this));
 		});
 		return result;
@@ -83,11 +83,11 @@
 	
 	function showPopup(msg) {
 		tndoHide = false;
-		$(popup).css('display', 'none');
-		$(popup).html( msg );
-   		$(".p-tooltip-image,.db-image").css('display', 'none');
+		jQuery(popup).css('display', 'none');
+		jQuery(popup).html( msg );
+   		jQuery(".p-tooltip-image,.db-image").css('display', 'none');
 		calculatePopupPosition();
-		$(popup).css('display', 'inline');
+		jQuery(popup).css('display', 'inline');
 	}
 
 	function hideIn(milisec) {
@@ -100,8 +100,8 @@
 		if (!force && !tndoHide) return;
 		tndoHide = false;
 		popup_info = {id:-1, type:"", dispatcher:null};
-		$(popup).css('display', 'none');
-		$(popup).html = '';
+		jQuery(popup).css('display', 'none');
+		jQuery(popup).html = '';
 	}
 	
 	function loadData(type, id) {
@@ -110,7 +110,7 @@
 		if (data_fromCache) {
 			showPopup(data_fromCache);
 		} else {
-			$.getJSON(gw2DB_PopupHost.format(type, id), function(data) {
+			jQuery.getJSON(gw2DB_PopupHost.format(type, id), function(data) {
 				saveInCache(type, id, formatResult(data));
 				if (popup_info.id == -1 ||
 					popup_info.id != id ||

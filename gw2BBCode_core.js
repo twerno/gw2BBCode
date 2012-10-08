@@ -1,8 +1,9 @@
+	
 
 	var gw2DBMap = {};
 	
 	function init() {
-		$(includeTo.join(',')).addClass('gw2BBCode');
+		jQuery(includeTo.join(',')).addClass('gw2BBCode');
 		initElements();
 		addPopup2Gw2DBLinks();
 		loadStyle(popup_style);
@@ -42,12 +43,12 @@
 	}
 	
 	function addPopup2Gw2DBLinks() {
-		$(".gw2BBCode a").each(function() {
+		jQuery(".gw2BBCode a").each(function() {
 			if (this.host == 'www.gw2db.com') {
 				var myRegexp = /http:\/\/www.gw2db.com\/(\w+)\/(\d+)-/g;
 				var match = myRegexp.exec(this.href);
 				if (match != null)
-					$(this).addClass("gw2DBTooltip gw2DB{0}_{1}".format(match[1], match[2]));
+					jQuery(this).addClass("gw2DBTooltip gw2DB{0}_{1}".format(match[1], match[2]));
 			}
 		});
 	}
@@ -91,8 +92,8 @@
 	function gw2BBCode() {
 		processExclusion(/\[/g, '{#}');
 		try {
-			//$($("*").get().reverse()).each(function() {
-			$(".gw2BBCode").each(function() { gw2BBCodeAt(this); });
+			//jQuery(jQuery("*").get().reverse()).each(function() {
+			jQuery(".gw2BBCode").each(function() { gw2BBCodeAt(this); });
 		} finally {
 			processExclusion(/\{#\}/g, '[');
 		}
@@ -137,7 +138,7 @@
 	}
 	
 	function processExclusion(a, b) {
-		$((".gw2BBCode {0}".format(excludeFrom.join(',')))).each(function() {
+		jQuery((".gw2BBCode {0}".format(excludeFrom.join(',')))).each(function() {
 			var text = this.innerHTML.replace(a, b);
 			if (text != this.innerHTML)
 				this.innerHTML = text;
@@ -161,14 +162,14 @@
 	function weaponSwapHandler(event) {
 		if (window.getSelection().removeAllRanges)
 			window.getSelection().removeAllRanges();
-		$(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
-			$(this).css('display', ($(this).css('display') == 'inline' ? 'none' : 'inline') );
+		jQuery(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
+			jQuery(this).css('display', (jQuery(this).css('display') == 'inline' ? 'none' : 'inline') );
 		});
 		hidePopup(true);
 	}
 	
 	function registerWeaponSwapHandlers() {
-		$('.gw2BBCode_weaponSwap')
+		jQuery('.gw2BBCode_weaponSwap')
 			.unbind('click')
 			.click(weaponSwapHandler);
 	}
@@ -271,4 +272,5 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	}
 	
-	$(window).load(function() {setTimeout(function() {init();}, 300)});
+	jQuery.noConflict();
+	jQuery(window).load(function() {setTimeout(function() {init();}, 300)});
