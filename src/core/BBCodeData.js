@@ -28,6 +28,7 @@
 		
 		this.showAsText = false;
 		this.isPrefixed = false; /* gw2: */
+		this.options    = '';
 		
 		this.stance    = '';
 		this.forcedIdx = -1;

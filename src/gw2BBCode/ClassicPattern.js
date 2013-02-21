@@ -26,17 +26,20 @@
 		};
 		
 		var getResultForMatch = function(match) {
-			var result = new BBCodeData(gw2Global, resourceMgr, 'gw2BBCode');
-			result.orig  = (match[0]||"");
-			result.regex = new RegExp((match[0]||"").replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "gi");
+			var result        = new BBCodeData(gw2Global, resourceMgr, 'gw2BBCode');
+			result.orig       = (match[0]||"");
+			result.regex      = new RegExp((match[0]||"").replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"), "gi");
 			result.showAsText = (match[1]||"").indexOf('@') !== -1;;
+			result.options    = (match[1]||"");
 			result.isPrefixed = (match[2]||"").toLowerCase() === "gw2:";
+			result.entry1     = ((match[7]||'') !== "") ? new BBCodeDataEntry(match[7]) : null;
+			result.entry2     = ((match[9]||'') !== "") ? new BBCodeDataEntry(match[9]) : null;
+			result.forcedIdx  = Math.max(1, match[13]||1);
+
 			result.setProfession(match[4]||"");
 			result.setType(match[6]||"");
-			result.entry1 = ((match[7]||'') !== "") ? new BBCodeDataEntry(match[7]) : null;
-			result.entry2 = ((match[9]||'') !== "") ? new BBCodeDataEntry(match[9]) : null;
 			result.setStance(match[11]||"");
-			result.forcedIdx = Math.max(1, match[13]||1);
+
 			return result;
 		};
 	};
