@@ -16,7 +16,7 @@
 			jQuery(event.target.parentElement).find('.gw2BBCode_weaponSet').each(function(){
 				jQuery(this).css('display', (jQuery(this).css('display') == 'inline' ? 'none' : 'inline') );
 			});
-			tooltipMgr.hidePopup(true);
+			tooltipMgr.hideAll();
 		}
 	}
 	

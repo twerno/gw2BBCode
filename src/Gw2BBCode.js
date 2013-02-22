@@ -5,14 +5,16 @@
 		var documentReady   = false;
 		var resourcesLoaded = false;
 	
-		this.gw2Global       = new Gw2BBCodeGlobal();
-		var processor        = null;
-		var gw2DataMap       = null;
-		var tooltipMgr       = null;
-		var resourceMgr      = null;
-		var patternFinders   = null;
-		var contentGenerator = null;
-		var weaponSwapHelper = null;
+		this.gw2Global        = new Gw2BBCodeGlobal();
+		var processor         = null;
+		var gw2DataMap        = null;
+		var resourceMgr       = null;
+		var patternFinders    = null;
+		var contentGenerator  = null;
+		var weaponSwapHelper  = null;
+		var tooltipContentObj = null;
+		
+		var gw2TooltipMgr    = null;
 	
 		this.isLoadedAndReady = function() {
 			return resourcesLoaded && documentReady;
@@ -23,7 +25,8 @@
 				 return false;
 
 			weaponSwapHelper.registerWeaponSwapHandlers();
-			tooltipMgr.registerTooltipsHandlers();
+			gw2TooltipMgr.registerTooltipsHandlers(".gw2DBTooltip");
+			
 			return true;
 		}
 	
@@ -38,12 +41,14 @@
 			loadStyle(self.gw2Global.gw2_cssURL);
 			loadStyle(self.gw2Global.popup_cssURL);
 
-			tooltipMgr       = new TooltipMgr(self.gw2Global, resourceMgr);
+			tooltipContentObj = new Gw2TooltipContentObj(self.gw2Global);
+			gw2TooltipMgr     = new NestedTooltipMgr(tooltipContentObj);
+			
 			gw2DataMap       = new Gw2DataMap(self.gw2Global, resourceMgr, resourceList);
 			patternFinders   = new PatternFinders(gw2DataMap);
 			contentGenerator = new Gw2DBCOMGenerator(self.gw2Global);
 			processor        = new HTMLProcessor(contentGenerator, patternFinders);
-			weaponSwapHelper = new WeaponSwapHelper(tooltipMgr);
+			weaponSwapHelper = new WeaponSwapHelper(gw2TooltipMgr);
 			
 			resourceMgr.loadResourceList(resourceList, onResourcesLoaded);
 			jQuery(document).ready(onDocumentReady);
@@ -67,7 +72,6 @@
 				return;
 
 			processor.processAll();
-			tooltipMgr.initPopups();
 			self.registerAllHandlers();
 		}
 		
