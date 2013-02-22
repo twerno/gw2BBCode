@@ -41,7 +41,7 @@
 			loadStyle(self.gw2Global.gw2_cssURL);
 			loadStyle(self.gw2Global.popup_cssURL);
 
-			tooltipContentObj = new Gw2TooltipContentObj(self.gw2Global);
+			tooltipContentObj = new Gw2TooltipContentObj(self.gw2Global, resourceMgr);
 			gw2TooltipMgr     = new NestedTooltipMgr(tooltipContentObj);
 			
 			gw2DataMap       = new Gw2DataMap(self.gw2Global, resourceMgr, resourceList);

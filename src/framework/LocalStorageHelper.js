@@ -37,7 +37,7 @@
 	
 	LocalStorageHelper.isValid = function(storageObj, version) {
 		return storageObj !== null && storageObj['ver'] === version && 
-		      (storageObj['ttl'] === 0 || (storageObj['ttl'] !== 0 && storageObj['created'] +storageObj['ttl'] < Date.now()));
+		      (storageObj['ttl'] === 0 || (storageObj['ttl'] !== 0 && storageObj['created'] +storageObj['ttl'] >= Date.now()));
 	}
 	
 	LocalStorageHelper.isUpToDate = function(key, ver) {

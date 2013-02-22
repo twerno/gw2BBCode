@@ -19,4 +19,5 @@
 		this.gw2DBUrl        = "http://www.gw2db.com";
 		this.onClickGoTo     = 'gw2DB'; //gw2Wiki, gw2DB
 		this.gw2DB_PopupHost = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
+		this.gw2DBObj_ttl    = 1000*60*60*24; // 1 day
 	}

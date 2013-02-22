@@ -2,7 +2,7 @@
 	ResourceManager = function() {
 		
 		this.loadResource = function(resourceUrl, version, ttl, callback) {
-			this.getResourceList([{'url':resourceUrl, 'ver':version, 'ttl':ttl, 'data':null}], callback);
+			this.loadResourceList([{'url':resourceUrl, 'ver':version, 'ttl':ttl, 'data':null}], callback);
 		};
 		
 		this.loadResourceList = function(resourceArr, callback) {
