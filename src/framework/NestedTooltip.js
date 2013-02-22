@@ -52,7 +52,7 @@
 			jQuery(tooltip).css('z-index', this.zindex);
 			jQuery(tooltip).html( content );
 			jQuery(".p-tooltip-image,.db-image").css('display', 'none');
-			calculatePopupPosition();
+			calculateTooltipPosition();
 			jQuery(tooltip).css('display', 'inline');
 			this.hidden = false;
 			onContentChanged(self, tooltip);
@@ -109,25 +109,19 @@
 			jQuery(tooltip).unbind('mouseleave', onTooltipMouseOut);
 		}
 		
-		var calculatePopupPosition = function() {
-			var top, left, newTop, newLeft,
-			  jq_dispatcher = jQuery(self.dispatcher),
-			  jq_win        = jQuery(window),
-			  jq_tooltip    = jQuery(tooltip);
-		
-			top  = jq_tooltip.css("top").replace("px", "");
-			left = jq_tooltip.css("left").replace("px", "");
+		var calculateTooltipPosition = function() {
+			var newTop, newLeft;
 
-			newTop = Math.max(1, jq_dispatcher.offset().top +jq_dispatcher.height() -3);
-			if (newTop > jq_win.height() +jq_win.scrollTop() -jq_tooltip.outerHeight() -5)
-				newTop = jq_dispatcher.offset().top +jq_dispatcher.height() -computeHeightOf(self.dispatcher) -jq_tooltip.outerHeight() -5;
+			newTop = Math.max(1, jQuery(self.dispatcher).offset().top +jQuery(self.dispatcher).height() -3);
+			if (newTop > jQuery(window).height() +jQuery(window).scrollTop() -jQuery(tooltip).outerHeight() -5)
+				newTop = jQuery(self.dispatcher).offset().top +jQuery(self.dispatcher).height() -computeHeightOf(self.dispatcher) -jQuery(tooltip).outerHeight() -5;
 				
-			newLeft = jq_dispatcher.offset().left;
-			if (newLeft > jq_win.width() +jq_win.scrollLeft() -367)
-				newLeft =  Math.min(left, jq_dispatcher.offset().left +jq_dispatcher.outerWidth() -367);
+			newLeft = jQuery(self.dispatcher).offset().left;
+			if (newLeft > jQuery(window).width() +jQuery(window).scrollLeft() -367)
+				newLeft =  jQuery(self.dispatcher).offset().left +jQuery(self.dispatcher).outerWidth() -367;
 
-			jq_tooltip.css("top", newTop);
-			jq_tooltip.css("left", newLeft);
+			jQuery(tooltip).css("top", newTop +"px");
+			jQuery(tooltip).css("left", newLeft +"px");
 		}
 		
 		var computeHeightOf = function(element) {
