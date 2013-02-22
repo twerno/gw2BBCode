@@ -4,8 +4,8 @@
 		this.imagesUrl  = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2_images";
 		this.contentUrl = 'https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/';
 	
-		this.popup_cssURL = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/tooltip.css";
-		this.gw2_cssURL   = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/gw2BBCode.css";
+		this.popup_cssURL = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/tooltip.css";
+		this.gw2_cssURL   = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/gw2BBCode.css";
 
 		this.main_pack      = {'url':this.contentUrl+'main_resource_pack.json', 'ver':2};
 		this.stances_langEn = ['air', 'earth', 'fire', 'water'];

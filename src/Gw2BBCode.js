@@ -13,6 +13,7 @@
 		var contentGenerator  = null;
 		var weaponSwapHelper  = null;
 		var tooltipContentObj = null;
+		var syndicationPlugin = new Gw2DBSyndicationPlugin();
 		
 		var gw2TooltipMgr    = null;
 	
@@ -20,13 +21,12 @@
 			return resourcesLoaded && documentReady;
 		}
 		
-		this.registerAllHandlers = function() {
-			if (!this.isLoadedAndReady())
-				 return false;
+		this.processNode = function(node) {
+			if (!self.isLoadedAndReady())
+				return false;
 
-			weaponSwapHelper.registerWeaponSwapHandlers();
-			gw2TooltipMgr.registerTooltipsHandlers(".gw2DBTooltip");
-			
+			processor.processNode(node);
+			registerAllHandlers();
 			return true;
 		}
 	
@@ -42,7 +42,7 @@
 			loadStyle(self.gw2Global.popup_cssURL);
 
 			tooltipContentObj = new Gw2TooltipContentObj(self.gw2Global, resourceMgr);
-			gw2TooltipMgr     = new NestedTooltipMgr(tooltipContentObj);
+			gw2TooltipMgr     = new NestedTooltipMgr(tooltipContentObj, onTooltipContentChanged);
 			
 			gw2DataMap       = new Gw2DataMap(self.gw2Global, resourceMgr, resourceList);
 			patternFinders   = new PatternFinders(gw2DataMap);
@@ -71,8 +71,22 @@
 			if (!self.isLoadedAndReady())
 				return;
 
-			processor.processAll();
-			self.registerAllHandlers();
+			self.processNode(document.body);
+		}
+		
+		var registerAllHandlers = function() {
+			if (!self.isLoadedAndReady())
+				 return false;
+
+			syndicationPlugin.markAllGw2DBLink();
+			weaponSwapHelper.registerWeaponSwapHandlers();
+			gw2TooltipMgr.registerTooltipsHandlers(".gw2DBTooltip");
+			
+			return true;
+		}
+		
+		var onTooltipContentChanged = function(tooltip, tooltipDiv) {
+			self.processNode(tooltipDiv);
 		}
 		
 		init();

@@ -1,24 +1,29 @@
 
-	NestedTooltip = function(dispatcher, parentTooltip, activeStatusChanged, onHiding) {
+	NestedTooltip = function(dispatcher, parentTooltip, activeStatusChanged, onHiding, onContentChanged) {
 		this.parentTooltip = parentTooltip||null;
 		this.childTooltip  = null;
 		this.zindex        = (parentTooltip !== null ? parentTooltip.zindex +1 : 9999);
 		this.dispatcher   = dispatcher||null;
 		
-		if (parentTooltip !== null)
+		if (parentTooltip !== null) {
+			if (parentTooltip.childTooltip !== null)
+				parentTooltip.childTooltip.hideNow();
 			parentTooltip.childTooltip = this;
+		}
 		
-		var tooltip      = null;
-		var self         = this;
-		var timeout      = 0;
-		
-		var isMouseOverDispatcher = false;
+		var self                  = this;
+		var tooltip               = null;
+		var timeout               = 0;
 		var isMouseOverTooltip    = false;
-		var activeStatusChanged   = activeStatusChanged;
+		var isMouseOverDispatcher = false;
+		this.hidden                = false;
+
 		var onHiding              = onHiding;
-		
-		this.isMouseOver = function() {
-			return isMouseOverTooltip || isMouseOverDispatcher;
+		var onContentChanged      = onContentChanged;
+		var activeStatusChanged   = activeStatusChanged;
+
+		this.isActive = function() {
+			return (isMouseOverTooltip || isMouseOverDispatcher) && !this.hidden;/*&& !this.isHidding()*/;
 		}
 
 		this.setContent = function(content) {
@@ -30,8 +35,9 @@
 		}
 		
 		this.stopHiding = function() {
-			if (this.isHidding())
-				clearTimeout(timeout);
+			clearTimeout(timeout);
+			if (this.parentTooltip !== null)
+				this.parentTooltip.stopHiding();
 		}
 		
 		this.showTooltip = function(content) {
@@ -48,19 +54,25 @@
 			jQuery(".p-tooltip-image,.db-image").css('display', 'none');
 			calculatePopupPosition();
 			jQuery(tooltip).css('display', 'inline');
+			this.hidden = false;
+			onContentChanged(self, tooltip);
 		}
 		
 		this.hideIn = function(milisec) {
-			this.stopHiding();
+			clearTimeout(timeout);
 			timeout = setTimeout(function() {self.hideNow();}, milisec);
 		}
 		
 		this.hideNow = function() {
-			this.stopHiding();
+			clearTimeout(timeout);
 			hideChild();
 			unregisterEvents();
 			unregisterTooltip();
+			this.hidden = true;
 			onHiding(this);
+			if (this.parentTooltip !== null)
+				this.parentTooltip.childTooltip = null;
+			this.parentTooltip = null;
 		}
 		
 		var hideChild = function() {
@@ -72,8 +84,7 @@
 			if (tooltip !== null)	
 				return;
 			tooltip = document.createElement('div');
-			tooltip.setAttribute("id", "db-tooltip-container");
-			jQuery(tooltip).css('display', 'none');
+			jQuery(tooltip).css('display', 'none').addClass('db-tooltip-container');
 			document.getElementsByTagName("body")[0].appendChild(tooltip);
 		}
 		
@@ -129,21 +140,25 @@
 
 		var onDispatcherMouseOver = function() {
 			isMouseOverDispatcher = true;
+			self.stopHiding();
 			activeStatusChanged(self);
 		}
 
 		var onDispatcherMouseOut = function() {
 			isMouseOverDispatcher = false;
+			self.hideIn(150);
 			activeStatusChanged(self);
 		}
 
 		var onTooltipMouseOver = function() {
 			isMouseOverTooltip = true;
+			self.stopHiding();
 			activeStatusChanged(self);
 		}
 
 		var onTooltipMouseOut = function() {
 			isMouseOverTooltip = false;
+			self.hideIn(150);
 			activeStatusChanged(self);
 		}
 	}
