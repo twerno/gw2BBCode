@@ -12,7 +12,7 @@
 		this.fillWeaponSetData = function(gw2DataMap) {
 			if (this.isMacro())
 				for (var i = 0; i < this.dataObj['m'].length; i++)
-					this.dataObjSet.push(gw2DataMap.dataMap[this.dataObj['m'][i]]);
+					this.dataObjSet.push(gw2DataMap.dataMap[this.dataObj['m'][i]]||null);
 		}
 	}
 	

@@ -35,6 +35,8 @@
 
 			for (i = 0; i < entry.dataObj['m'].length; i++) {
 				dataObj = entry.dataObjSet[i];
+				if (dataObj === null)
+					throw new Error("[WeaponSet:{0}] No dataObj for id:{1}".format(entry.name, entry.dataObj['m'][i]));
 				name = getNameFrom(dataObj, entry.nameObj['lang'], 'en');
 
 				tmpArr.push(
