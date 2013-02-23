@@ -7,15 +7,17 @@
 		var tasks = [];
 		var i = 0;
 		var __element = null;
+		var __counter = null;
 		var __taskList = null;
 		
-		this.validDB = function(element) {
+		this.validDB = function(element, counter) {
 			
 			if (!gw2BBCode.isLoadedAndReady()) {
 				alert('not loaded yet');
 				return;
 			}
 			__element = element;
+			__counter = counter;
 			var task, p, dataObj;
 			
 			for (p in gw2DataMap.dataMap) {
@@ -42,6 +44,7 @@
 					}
 				}
 			}
+			element.innerHTML += "DONE<BR>";
 		}
 			
 		var processNextTask = function() {
@@ -57,6 +60,7 @@
 					processNextTask();
 				})
 				__taskList.doWork();
+				__counter.innerHTML = "Processed {0}/{1}".format(i.toString(), tasks.length.toString());
 			} else {
 				__element.innerHTML += "DONE<BR>";
 			}

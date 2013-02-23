@@ -3,6 +3,7 @@
 		this.timeout = (typeof(tasksTimeout) !== 'undefined' ? tasksTimeout : 15) *1000;
 		this.tasks = [];
 		var __timeout = null;
+		var self = this;
 		
 		this.clear = function() {
 			this.tasks = [];
@@ -10,7 +11,6 @@
 		};
 		
 		this.addTask = function(task) {
-			var self = this;
 			this.tasks.push(
 				task.success(function(data) {
 					if (self.status !== -1 && self.isDone()) {
@@ -30,10 +30,7 @@
 			var self = this, 
 			    i = 0;
 			if (this.timeout !== null && this.timeout > 0)
-				__timeout = setTimeout(function() {
-					self.status = -1;
-					throw new Error('TaskList: timeout reached.');
-				}, this.timeout);
+				__timeout = setTimeout(onTimeout, this.timeout);
 			
 			for (i = 0; i < this.tasks.length; i++)
 				this.tasks[i].doWork();
@@ -48,6 +45,12 @@
 					return false;
 			return true;		
 		};
+		
+		var onTimeout = function() {
+			clearTimeout(__timeout);
+			self.status = -1;
+			self.errorFn(self, "TaskList: timeout reached.");
+		}
 	}
 	
 	TaskList.prototype = new Task;
