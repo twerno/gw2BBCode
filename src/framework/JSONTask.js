@@ -6,7 +6,7 @@
 		this.workFn = function() {
 			var self = this;
 		
-			jQuery.getJSON(this.url)
+			jQuery.ajax({'url':this.url, 'dataType': "jsonp", 'timeout': 5000})
 				.success(function(data) { 
 					self.status = 2;
 					self.data = data;

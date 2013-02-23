@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script src="resources_master.js"></script>	
-</head>
-<body>
-</body>
-<script>
 	var stances = ['air', 'terre', 'feux', 'eau'];
 	var prow_s = ['el', 'in', 'ga', 'me', 'ne', 'ra', 'th', 'wa'];
 	var prow_l = [];
 	var type = ['skill', 'trait', 'boon', 'condition'];
-	
-
-
 
 	function sortNPrint() {
 		gw2Elements.sort(compare);
@@ -58,7 +47,3 @@
 		} else 
 			return (a.n > b.n) ? 1 : -1;
 	}
-
-	sortNPrint();
-</script>
-</html>

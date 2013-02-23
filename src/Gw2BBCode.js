@@ -6,6 +6,7 @@
 		var resourcesLoaded = false;
 	
 		this.gw2Global        = new Gw2BBCodeGlobal();
+		this.validator        = null;
 		var processor         = null;
 		var gw2DataMap        = null;
 		var resourceMgr       = null;
@@ -49,6 +50,7 @@
 			contentGenerator = new Gw2DBCOMGenerator(self.gw2Global);
 			processor        = new HTMLProcessor(contentGenerator, patternFinders);
 			weaponSwapHelper = new WeaponSwapHelper(gw2TooltipMgr);
+			self.validator   = new Gw2DBValidator(self.gw2Global, gw2DataMap);
 			
 			resourceMgr.loadResourceList(resourceList, onResourcesLoaded);
 			jQuery(document).ready(onDocumentReady);
