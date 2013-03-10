@@ -16,11 +16,11 @@
 		this.process = function(data) {
 			var result = [],
 				match = regExpr.exec(data),
-				finded = null;
+				found = null;
 			while (match !== null) {
-				finded = getResultForMatch(match);
+				found = getResultForMatch(match);
 				match = regExpr.exec(data);
-				result.push(finded);
+				result.push(found);
 			};
 			return result;
 		};

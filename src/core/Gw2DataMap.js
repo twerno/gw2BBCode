@@ -26,8 +26,7 @@
 			}
 		}
 		this.init(resourceList);
-		
-		
+
 		this.findDataAndNameFor = function(bbCodeData) {
 			var dataObj = null;
 			
@@ -133,6 +132,10 @@
 		
 		var compare = function compare(a, b) {
 			if (a['n'] === b['n']) {
+				if (a.t == 'b' || a.t == 'co')
+					return 1;
+				if (b.t == 'b' || b.t == 'co')
+					return -1;			
 				if ((a.id > 0 && b.id > 0) || (a.id < 0 && b.id < 0)) 
 					return (a.id > b.id) ? -1 : 1;  
 				else

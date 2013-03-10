@@ -50,7 +50,7 @@
 			contentGenerator = new Gw2DBCOMGenerator(self.gw2Global);
 			processor        = new HTMLProcessor(contentGenerator, patternFinders);
 			weaponSwapHelper = new WeaponSwapHelper(gw2TooltipMgr);
-			self.validator   = new Gw2DBValidator(self.gw2Global, gw2DataMap);
+			self.validator   = (typeof Gw2DBValidator !== "undefined") ? new Gw2DBValidator(self.gw2Global, gw2DataMap) : null;
 			
 			resourceMgr.loadResourceList(resourceList, onResourcesLoaded);
 			jQuery(document).ready(onDocumentReady);

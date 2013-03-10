@@ -8,16 +8,45 @@
 		this.gw2_cssURL   = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/gw2BBCode.css";
 
 		this.main_pack      = {'url':this.contentUrl+'main_resource_pack.json', 'ver':2};
-		this.stances_langEn = ['air', 'earth', 'fire', 'water'];
-		this.prof_s_langEn  = ['el', 'en', 'gu', 'me', 'ne', 'ra', 'th', 'wa'];
-		this.prof_l_langEn  = ["Elementalist", "Engineer", "Guardian", "Mesmer", "Necromancer", "Ranger", "Thief", "Warrior"];
-		this.types_langEn   = ['skill', 'trait', 'boon', 'condition'];
 		this.lang_packs     = [{'url':this.contentUrl+'lang_pack_fr.json', 'ver':1, 'lang':'fr'}];
-		this.element_type   = {"s":"skills","tr":"traits","b":"boons","co":"conditions"};
 		
 		this.gw2WikiUrl      = "http://wiki.guildwars2.com/wiki";
 		this.gw2DBUrl        = "http://www.gw2db.com";
 		this.onClickGoTo     = 'gw2DB'; //gw2Wiki, gw2DB
 		this.gw2DB_PopupHost = "http://www.gw2db.com/{0}/{1}/tooltip?x&advanced=1&callback=?";
 		this.gw2DBObj_ttl    = 1000*60*60*24; // 1 day
+		
+		this.types_En = [['s',  "skill"], 
+		                 ['tr', "trait"], 
+					     ['b',  'boon'],
+						 ['co', 'condition']];
+
+		this.types_names = {'s'  : "skills", 
+		                    'tr' : "traits", 
+						    'b'  : 'boons', 
+							'co' : 'conditions'};
+
+		this.profs_En = [['el', "Elementalist"], 
+		                 ['en', "Engineer"], 
+						 ['gu', "Guardian"], 
+						 ['me', "Mesmer"], 
+						 ['ne', "Necromancer"], 
+						 ['ra', "Ranger"], 
+						 ['th', "Thief"], 
+						 ['wa', "Warrior"]];
+
+		this.stances_En = [["air",   'air'], 
+		                   ["earth", 'earth'], 
+						   ["fire",  'fire'], 
+						   ["water", 'water']];
+						   
+		this.convertCode = function(code, converter) {
+			var i, result = '??';
+			for (i = 0; i < converter.length; i++)
+				if (converter[0] === code) {
+					result = converter[1];
+					break;
+				}
+			return result;	
+		}
 	}

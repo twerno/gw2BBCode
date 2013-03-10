@@ -24,7 +24,7 @@
 				dataObj = gw2DataMap.dataMap[p];
 				if (dataObj && dataObj['id'] && dataObj['id'] >= 0) {
 					task = new JSONTask(
-						gw2Global.gw2DB_PopupHost.format(gw2Global.element_type[dataObj['t']], dataObj['id']));
+						gw2Global.gw2DB_PopupHost.format(gw2Global.types_names[dataObj['t']], Gw2DBHelper.getGw2DBID(dataObj)));
 					task.dataObj = dataObj;
 					tasks.push(task);
 				}
@@ -42,6 +42,19 @@
 							element.innerHTML += "[ERROR] id: {0} name: {1} prof: {2} idx: {3} || No data for id: <A href='{4}'>{5}</a><br>".format(
 								dataObj['id'], dataObj['n'], dataObj['p'], i.toString(), gw2Global.gw2DB_PopupHost.format('skills', dataObj['id']), dataObj['m'][i]);
 					}
+				}
+			}
+			element.innerHTML += "DONE<BR>";
+		}
+		
+		this.validUniqnessOfIDS = function(element) {
+			var p, dataObj, reg = {};
+			for (p in gw2DataMap.dataMap) {
+				dataObj = gw2DataMap.dataMap[p];
+				if (dataObj && dataObj['id']) {
+					if (reg[dataObj['id']])
+						element.innerHTML += "[ERROR] doubled ID={0}<br>".format(dataObj['id']);
+					reg[dataObj['id']] = true;
 				}
 			}
 			element.innerHTML += "DONE<BR>";

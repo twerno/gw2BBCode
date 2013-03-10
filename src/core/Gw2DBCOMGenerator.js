@@ -27,9 +27,9 @@
 		var getBBCodeForItem = function(entry, bbCodeData) {
 			var dataObj = entry.dataObj, 
 				name    = getNameFrom(dataObj, entry.nameObj['lang'], 'en');
-			return generateBBCodeFor( dataObj['id'], name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) );
+			return generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) );
 		}
-
+		
 		var getBBCodeForMacro = function(entry, bbCodeData) {
 			var i, tmpArr = [], dataObj = null, name = '', result = '';
 
@@ -40,7 +40,7 @@
 				name = getNameFrom(dataObj, entry.nameObj['lang'], 'en');
 
 				tmpArr.push(
-					generateBBCodeFor( dataObj['id'], name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) )
+					generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) )
 				);
 			}
 
@@ -50,47 +50,64 @@
 			return result;	
 		}
 		
-		var generateBBCodeFor = function(id, name, type, imgOrTextDesc) {
+		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc) {
 			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2}'>{3}</a>")
-				.format(getGoToUrl(id, name, type), gw2Global.element_type[type], id, imgOrTextDesc);
+				.format(getGoToUrl(gw2dbId, name, type), gw2Global.convertCode(type, gw2Global.types_En), id, imgOrTextDesc);
 		}
 		
 		var getGoToUrl = function (id, name, type) {
 			if (gw2Global.onClickGoTo === 'gw2Wiki')
 				return "{0}/{1}".format(gw2Global.gw2WikiUrl, get_wikiElement_name(name));
 			else if (gw2Global.onClickGoTo === 'gw2DB')
-				return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, gw2Global.element_type[type], id);
+				return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, gw2Global.types_names[type], id);
 			else
 				return "#";
 		}
-		
+
 		var get_wikiElement_name = function (gw2ElementName) {
 			return gw2ElementName.replace(/\s/g, '-').replace(/['"!]/g, "");
 		}
-		
+
 		var getImgOrTextDesc = function(name, dataObj, bbCodeData) {
 			if (bbCodeData.showAsText)
-				return name;
+				return getImg(dataObj, bbCodeData, true) +name;
 			else
-				return getImg(dataObj['t'], dataObj['tr']||"", dataObj['id'], bbCodeData);
+				return getImg(dataObj, bbCodeData, false);
 		}
-		
-		var getImg = function(type, traitIdx, id, bbCodeData) {
-			if (type === 'tr') 
-				return "<img src='{0}/{1}/{2}.png'>".format(gw2Global.imagesUrl, gw2Global.element_type[type], traitIdx); /*trait image*/
+
+		var getImg = function(dataObj, bbCodeData, small) {
+			var id       = dataObj['id'],
+				prof     = dataObj['p']||"",
+			    type     = dataObj['t'],
+			    traitIdx = dataObj['ti'],
+				gw2db    = dataObj['gw2db']||0,
+				folder   = gw2Global.types_names[type],
+				imgTag   = '';
+
+			if (gw2db !== 0)
+				id = gw2db;
+				
+			if ((folder||"") === "")
+				throw new Error("Undefined img folder for type:" +type +" !");
+
+			imgTag = "<img src='{0}/{1}/{2}.png'" + (small ? " style='width:18px;height:18px;vertical-align:text-bottom;'" : "") +">";
+				
+			if (type === 'tr' && (prof === "" || traitIdx === 0)) 
+				return imgTag.format(gw2Global.imagesUrl, folder, traitIdx); /*trait image*/
+			else if (type === 'tr' && prof !== "" && traitIdx === 0)
+				return imgTag.format(gw2Global.imagesUrl, folder, prof); /*trait image*/
 			else
-				return "<img src='{0}/{1}/{2}.png'>".format(gw2Global.imagesUrl, gw2Global.element_type[type], id);
-			// uwzglednij opcje
+				return imgTag.format(gw2Global.imagesUrl, folder, id);
 		};
-		
+
 		var getNameFrom = function(dataObj, preferredLang, mainLang) {
 			var result = dataObj['names'][preferredLang];
-			if (result||"" !== "")
+			if ((result||"") !== "")
 				return result;
 			else 
 				return dataObj['names'][mainLang]||"";
 		}
-		
+
 		var weaponSwapWrapper = function(content1, content2) {
 			var tnSet2 = (content2||"") !== "";
 			
@@ -99,5 +116,5 @@
 				        content1,
 						tnSet2 ? "<div class='gw2BBCode_weaponSet' style='display:none;'>{0}</div>".format(content2) : "");
 		}
-		
+
 	}

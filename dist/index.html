@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>gw2BBCode</title>
+<meta http-equiv="Content-Language" content="pl" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="Guild Wars 2, BBCode, bb code, guildwars2, gw2bbcode, gw2, gw2 bbcode" />
+<meta name="description" content="Guild Wars 2 BBCode javascript plugin" />
+
+<link rel="stylesheet" type="text/css" href="../page_res/style.css" media="screen" />
+
+<script src="../libs/jquery-1.9.0.min.js"></script>
+
+<script type="text/javascript" src="gw2BBCodeNext.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35005283-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  
+  function testButtonClick() {
+	testTarget.innerHTML = testSource.value;
+	gw2BBCode.processNode(testTarget);
+  }
+
+</script>
+</head>
+<body>
+	<div class="page-width">
+		<div class="logo"></div>
+		<div class="name">gw2BBCode.Next</div>
+		<div class="buildExample gw2BBCode">[gw2:th:Dagger/Dagger|shortbow] [gw2:Signet of Malice] [gw2:Roll for initiative][gw2:Caltrops][gw2:ShadowStep] [gw2:Dagger storm]</div>
+		<div class="twitter"><a href="https://twitter.com/gw2BBCodepl" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @gw2BBCode.pl</a></div>
+	</div>
+<div id="wrap">
+<div id="content">
+  <div class="left">
+  <div class="post">
+    <h2>[gw2:Might] <div class="text">What is gw2BBCode ?</div></h2>
+    <p>
+	Gw2BBCode is javascript plugin, which extends capability of <a href="http://www.gw2db.com/tooltips">GW2DB Tooltip</a>.
+	It converts (on the fly) <i>Guild&nbsp;Wars&nbsp;2</i> skill's names (traits, condition & boons) into icons. It can also show tooltip with description over the icon. <br/>All tooltips content comes from <a href="http://www.gw2db.com">GW2DB</a>.</p>
+  </div>	
+  <div class="post">
+    <h2>[gw2:Aegis] <div class="text">What macros are for and how to use them ?</div></h2>
+    <p>Macros allow you to get entire set of skills. You don't need to write every single skill from the weapon set by hand. 
+	All you need to do is to define weapon of choise and profession.</p>
+	<div class="example gw2BBCode"><code style="top:3px;width:90%;">[profession*:main_hand/offhand:stance**]</code>
+	<p style="width:95%;text-align:right;margin-top:4px;">*  <i>just first 2 letters of profession name</i>
+    <br/>** <i>ele only (default fire)</i></p>
+	</div>
+	<br/>
+	<div class="example gw2BBCode"><code>[ne:dagger/focus]</code>[gw2:ne:dagger/focus]</div>
+	<div class="example gw2BBCode"><code>[gu:mace/shield]</code>[gw2:gu:mace/shield]</div>
+	<div class="example gw2BBCode"><code>[ra:longbow]</code>[gw2:ra:longbow]</div>
+	<div class="example gw2BBCode"><code>[el:scepter/dagger]</code>[gw2:el:scepter/dagger]</div>
+  </div>
+  <div class="post">
+    <h2>[gw2:Stability] <div class="text">Weapons set swap</div></h2>
+	<div class="example gw2BBCode"><code style="top:3px;width:100%;">[profession*:main_hand/offhand|main_hand/offhand:stance**]</code>
+	<p style="width:95%;text-align:right;margin-top:4px;">*  <i>just first 2 letters of profession name</i>
+    <br/>** <i>ele only (default fire)</i></p>
+	</div>
+	<br/>
+	<div class="example gw2BBCode" style="margin-left: -135px;"><code style=" min-width:270px;">[ne:dagger/focus|Scepter/Warhorn]</code>[gw2:ne:dagger/focus|Scepter/Warhorn]</div>
+	<div class="example gw2BBCode" style="margin-left: -135px;"><code style=" min-width:270px;">[gu:mace/shield|Greatsword]</code>[gw2:gu:mace/shield|Greatsword]</div>
+	<div class="example gw2BBCode" style="margin-left: -135px;"><code style=" min-width:270px;">[ra:longbow|shortbow]</code>[gw2:ra:longbow|shortbow]</div>
+	<div class="example gw2BBCode" style="margin-left: -135px;"><code style=" min-width:270px;">[el:scepter/dagger|staff:water]</code>[gw2:el:scepter/dagger|staff:water]</div>
+  </div>
+  <div class="post">
+	<h2>[gw2:Swiftness] <div class="text">gw2BBCode vs <a href="http://www.gw2db.com/tooltips">GW2DB Tooltip</a> - differences</div></h2>
+	<p>
+	<ul class='list'><li class="element">All you need to know is the skill name, not the entire link adress.</li>
+<li class="element">Gw2BBCode shows icons wheres GW2DB Tooltip shows only links.</li>
+<li class="element">Gw2BBCode has macros - GW2DB Tooltip don't.</li>
+<li class="element">Gw2BBCode caches loaded recources - GW2DB Tooltip don't.</li>
+<li class="element">Both plugins can show tooltips... but gw2BBCode do it better ;)</li>
+<li class="element">Gw2BBCode is compatible with GW2DB Tooltip notation (tooltip over link)</li></ul></p>
+  </div>
+  <div class="post">
+	<h2>[gw2:Vigor] <div class="text">Instalation</div></h2>
+	<p>If your page already use JQuery just copy-paste this code snippet into your website</p>
+	<div class="example gw2BBCode"><code style="margin-left:-5px;top:3px;width:520px;font-size: small;text-align: left;">&#60;script type="text/javascript"<br/>src="http://gw2bbcode.pl/gw2BBCode.js"&#62;&#60;/script&#62;</code></div>
+<p>otherwise you need to add JQuery first:</p>
+  <div class="example gw2BBCode"><code style="margin-left:-5px;top:3px;width:520px;font-size: small;text-align: left;">&#60;script type="text/javascript"<br/>src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"&#62;&#60;/script&#62;</code><br/></div>
+
+  
+  </div>
+  
+  <div class="post">
+  <h2>[gw2:Poison] <div class="text">Configuration</div></h2>
+  <p>Keep in mind that you need to tell gw2BBCode which part of your page should be processed.</p>
+  <ul class="list">
+	<li class='element'>by default all content of <b>post</b> and <b>list_posts</b> classes <b>WILL</b> be processed</li>
+	<li class='element'>by default all content of <b>&#60;code></b> and <b>&#60;textarea></b> elements <b>WILL NOT</b> be processed</li>
+	<li class='element'>all content of the <b>gw2BBCode</b> classes <b>WILL BE</b> processed</li>
+  </ul>
+  <p>You can change default behavior by adding this code snippet <b>after</b> gw2BBCode.</p>
+  <div class="example gw2BBCode">
+  <code style="margin-left:-5px;top:3px;width:520px;font-size: small;text-align: left;">
+  &#60;script><br/>
+	&nbsp;&nbsp;includeTo&nbsp;&nbsp;&nbsp;= ['.post', '.list_posts']; /*default values*/<br/>
+	&nbsp;&nbsp;excludeFrom = ["code" ,"textarea"];&nbsp;&nbsp;&nbsp;&nbsp; /*default values*/<br/>
+  &#60;/script></code></div>
+  </div><br/><br/>
+  
+  <div class="post">
+	<h2>[gw2:Regeneration] <div class="text">Where i can find uncompiled source code?</div></h2>
+	<p>You can find plugins sources on gitHub: <A href="https://github.com/twerno/gw2BBCode">gw2BBCode</a>.</p>
+  </div>
+  
+  <br/><div class="post">
+	<h2>[gw2:Protection] <div class="text">How to contact me?</div></h2>
+	<p>You can find me in the game by the name of <b>Damra.5394</b>,<br /> or at: <b>&#116;&#119;&#101;&#114;&#110;&#111;&nbsp;{&#101;&#116;}&nbsp;&#103;&#109;&#97;&#105;&#108;&middot;&#99;&#111;&#109;</b>.</p>
+  </div>
+    <br/>
+  
+    </div>
+    <div class="right-box">
+    <h2 style="margin-top:0px;">Basics: </h2>
+	<p>Just put name of the skill into a brackets and... that's it!</p>
+	<div class="example gw2BBCode"><code>[gw2:Become the Raven]</code>[gw2:Become the Raven]</div>
+	<p>Make sure to write correct name - include every <b>"</b> <b>!</b> <b>'</b> <b>-</b></p>   
+    <div class="example gw2BBCode"><code>[gw2:"On My Mark!"]</code>[gw2:"On My Mark!"]</div>
+	<p>You can get skill name instead of icon by using <b>@</b></p>   
+	<div class="example gw2BBCode" style="height:20px;"><code style="top:0px;height:20px;">[@gw2:"On My Mark!"]</code>[@gw2:"On My Mark!"]</div>
+	<br/><h2>Macros: </h2>
+	<p><code style="top:-1px;margin-left:0px;">[gw2:el:staff:water]</code></p>
+	<div class="example gw2BBCode" style="margin-left:20px;">[gw2:el:staff:water]</div>
+	<br/><h2>Boons & conditions</h2>
+	<div class="example gw2BBCode" style="margin-left:0px;height:28px;">
+		<code style="top:-1px;margin-left:0px;">[gw2:Cripple][gw2:Poison][gw2:Burning][gw2:Aegis][gw2:Fury]...</code>
+	</div>
+	<div class="example gw2BBCode" style="margin-left:20px;height:40px;">
+		[gw2:Cripple][gw2:Poison][gw2:Burning][gw2:Aegis][gw2:Fury][gw2:Might][gw2:Protection][gw2:Retaliation]
+	</div>
+	<br/><h2>Traits</h2>
+	<div class="example gw2BBCode" style="margin-left:0px;height:28px;">
+		<code style="top:-1px;margin-left:0px;">[gw2:Reckless Dodge][gw2:Signet Use][gw2:Terror]...</code>
+	</div>
+	<div class="example gw2BBCode" style="margin-left:20px;">
+		[gw2:Reckless Dodge][gw2:Signet Use][gw2:Terror][gw2:Thrill of the Crime][gw2:Transmute]
+	</div>
+	<br/><h2>Filters: force type</h2>
+	<div class="example gw2BBCode" style="margin-left:0px;height:28px;">
+		<code style="top:-1px;margin-left:0px;">[gw2:skill:regeneration] [gw2:boon:regeneration]</code>
+	</div>
+	<div class="example gw2BBCode" style="margin-left:20px;">
+		[gw2:skill:regeneration] [gw2:boon:regeneration]
+	</div>
+	<div class="example gw2BBCode" style="margin-left:0px;height:28px;margin-top:10px;">
+		<code style="top:-1px;margin-left:0px;">[gw2:condition:poison] [gw2:trait:Explosive Powder]</code>
+	</div>
+	<div class="example gw2BBCode" style="margin-left:20px;">
+		[gw2:condition:poison] [gw2:trait:Explosive Powder]
+	</div>
+	<br/><h2>Skills with the same names</h2>
+	<div class="example gw2BBCode" style="margin-left:0px;height:28px;">
+		<code style="top:-1px;margin-left:0px;">[gw2:Disabling Shot.1] [gw2:Disabling Shot.2]</code>
+	</div>
+	<div class="example gw2BBCode" style="margin-left:20px;">
+		[gw2:skill:Disabling Shot.1] [gw2:skill:Disabling Shot.2]
+	</div>
+	<br/><h2>Compatibility mode (gw1BBCode)</h2>
+	<p>You can prefixed everything with:<code style="top:-1px;margin-left:5px;display:inline">[gw2:]</code></p>
+	<br/><h2>GW2DB Tooltip notation:</h2>
+	<div class="example gw2BBCode" style="margin-left:20px;">
+		<a href="http://www.gw2db.com/items/12823-carrion-ring">Carrion Ring</a></br>
+		<a href="http://www.gw2db.com/guildupgrades/63-wvw-fort-10-player-health">Bowl[s] of Mango Pie Filling</a><br/>
+		<a href="http://www.gw2db.com/recipes/9097-bowl-s-of-mango-pie-filling">WvW Fort +10% Player Health</a><br/>
+	</div>
+	<br/><h2>Check it out:</h2>
+	<div class="example gw2BBCode" style="margin-left:20px;height:90px;">
+		<textarea style="width:300px;height:50px;" id="testSource">[gw2:Me:Scepter/Pistol|Sword/Focus]</textarea>
+		<button onclick="testButtonClick()" type=button style="position: relative;left: 252px;padding-top: 3px;padding-right: 3px;padding-bottom: 3px;padding-left: 3px;">Submit</button>
+	</div>
+	<div id="testTarget" class="example gw2BBCode" style="margin-left:20px;min-height:70px;">
+	<br/>
+  </div>
+  </div>
+
+</div>
+</body>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</html>

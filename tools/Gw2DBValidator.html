@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-<script src="../dist/gw2BBCodeTest.js"></script>	
+<script src="../libs/jquery-1.9.0.min.js"></script>
+<script src="../dist/gw2BBCodeNext.js"></script>	
 </head>
 <body>
-	<button onClick="gw2BBCode.validator.validDB(errors, counter);">validate DB</button>
+	<button onClick="gw2BBCode.validator.validDB(errorsDB, counter);">validate DB</button>
 	<button onClick="gw2BBCode.validator.validMacros(errorsMacros);">validate macros</button>
+	<button onClick="gw2BBCode.validator.validUniqnessOfIDS(errorsIDS);">validate uniqness of IDS</button>
 	<div id="counter"></div>
 	<div id="errorsDB"></div>
 	<div id="errorsMacros"></div>
+	<div id="errorsIDS"></div>
 </body>
 </html>

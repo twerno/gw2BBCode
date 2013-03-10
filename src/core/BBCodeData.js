@@ -19,7 +19,7 @@
 	BBCodeData = function(gw2Global, resourceMgr, patternType) {
 		this.gw2Global = gw2Global;
 		this.resourceMgr = resourceMgr;
-	
+
 		this.patternType = patternType;
 		this.orig  = '';
 		this.regex = '';
@@ -30,10 +30,15 @@
 		this.isPrefixed = false; /* gw2: */
 		this.options    = '';
 		
-		this.stance    = '';
 		this.forcedIdx = -1;
+		
+		this.stance    = '';
 		this.type      = '';
 		this.prof      = '';
+		this.stanceStr = '';
+		this.typeStr   = '';
+		this.profStr   = '';
+		
 		
 		this.isWeaponSet = function() {return this.entry1 !== null && this.entry2 !== null};
 
@@ -50,15 +55,18 @@
 		};
 		
 		this.setStance = function(stanceStr) {
-			this.stance = LangPackHelper.getStanceIDFrom(gw2Global, resourceMgr, stanceStr);
+			this.stance    = LangPackHelper.getStanceCodeFor(gw2Global, resourceMgr, stanceStr); 
+			this.stanceStr = stanceStr;
 		}
 		
 		this.setType = function(typeStr) {
-			this.type = LangPackHelper.getTypeIDFrom(gw2Global, resourceMgr, typeStr);
+			this.type    = LangPackHelper.getTypeCodeFor(gw2Global, resourceMgr, typeStr);
+			this.typeStr = typeStr;
 		}
 		
 		this.setProfession = function(profStr) {
-			this.prof = LangPackHelper.getProfIDFrom(gw2Global, resourceMgr, profStr);
+			this.prof    = LangPackHelper.getProfCodeFor(gw2Global, resourceMgr, profStr);
+			this.profStr = profStr;
 		}
 		
 		this.isCorrect = function() {
