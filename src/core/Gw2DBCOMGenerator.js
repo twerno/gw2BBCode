@@ -52,7 +52,7 @@
 		
 		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc) {
 			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2}'>{3}</a>")
-				.format(getGoToUrl(gw2dbId, name, type), gw2Global.convertCode(type, gw2Global.types_En), id, imgOrTextDesc);
+				.format(getGoToUrl(gw2dbId, name, type), gw2Global.types_names[type], id, imgOrTextDesc);
 		}
 		
 		var getGoToUrl = function (id, name, type) {

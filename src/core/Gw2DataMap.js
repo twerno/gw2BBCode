@@ -71,7 +71,7 @@
 					currentItem['names'] = {'en':currentItem['n']};
 					this.dataMap[currentItem['id']] = currentItem;
 					this.nameMap[getArrayIDFor(currentItem['n'])] = this.nameMap[getArrayIDFor(currentItem['n'])]||[];
-					this.nameMap[getArrayIDFor(currentItem['n'])].push({'id':currentItem['id'], 'n':currentItem['n'], 'lang':'en'});
+					this.nameMap[getArrayIDFor(currentItem['n'])].push({'id':currentItem['id'], 'n':currentItem['n'], 'lang':'en', 'data':currentItem});
 				}
 
 				for (i = 0; i < gw2Global.lang_packs.length; i++) {
@@ -84,7 +84,7 @@
 						}
 
 						this.nameMap[getArrayIDFor(currentItem[1])] = this.nameMap[getArrayIDFor(currentItem[1])]||[];
-						this.nameMap[getArrayIDFor(currentItem[1])].push({'id':currentItem[0], 'n':currentItem[1], 'lang':pack['lang']});
+						this.nameMap[getArrayIDFor(currentItem[1])].push({'id':currentItem[0], 'n':currentItem[1], 'lang':pack['lang'], 'data':this.dataMap[currentItem[0]]});
 						this.dataMap[currentItem[0]]['names'][pack['lang']] = currentItem[1];
 					}
 				}
@@ -132,10 +132,10 @@
 		
 		var compare = function compare(a, b) {
 			if (a['n'] === b['n']) {
-				if (a.t == 'b' || a.t == 'co')
-					return 1;
-				if (b.t == 'b' || b.t == 'co')
-					return -1;			
+				if (a.data.t === 'b' || a.data.t === 'co')
+					return -1;
+				if (b.data.t === 'b' || b.data.t === 'co')
+					return 1;			
 				if ((a.id > 0 && b.id > 0) || (a.id < 0 && b.id < 0)) 
 					return (a.id > b.id) ? -1 : 1;  
 				else
