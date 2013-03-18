@@ -39,14 +39,4 @@
 		                   ["earth", 'earth'], 
 						   ["fire",  'fire'], 
 						   ["water", 'water']];
-						   
-		this.convertCode = function(code, converter) {
-			var i, result = '??';
-			for (i = 0; i < converter.length; i++)
-				if (converter[0] === code) {
-					result = converter[1];
-					break;
-				}
-			return result;	
-		}
 	}

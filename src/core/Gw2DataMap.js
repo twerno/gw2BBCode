@@ -10,7 +10,7 @@
 		var dataMapName = 'Gw2DataMap';
 		var nameMapName = 'Gw2NameMap';
 		
-		this.init = function(resourceList) {
+		var init = function(resourceList) {
 			var i = 0;
 				
 			if (!resourceMgr.isUpToDate(gw2Global.main_pack['url'], gw2Global.main_pack['ver'])) {
@@ -25,7 +25,7 @@
 				}
 			}
 		}
-		this.init(resourceList);
+		init(resourceList);
 
 		this.findDataAndNameFor = function(bbCodeData) {
 			var dataObj = null;

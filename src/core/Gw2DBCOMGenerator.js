@@ -51,8 +51,8 @@
 		}
 		
 		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc) {
-			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2}'>{3}</a>")
-				.format(getGoToUrl(gw2dbId, name, type), gw2Global.types_names[type], id, imgOrTextDesc);
+			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2} gw2BBCodeID_{3}'>{4}</a>")
+				.format(getGoToUrl(gw2dbId, name, type), gw2Global.types_names[type], gw2dbId, id, imgOrTextDesc);
 		}
 		
 		var getGoToUrl = function (id, name, type) {
