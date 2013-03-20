@@ -18,7 +18,7 @@
 	LocalStorageHelper.getObject = function(key, version) {
 		var storageObj = JSON.parse(localStorage.getItem(key));
 		if (this.isValid(storageObj, version))
-			return storageObj.data;
+			return (typeof storageObj.data === "string") ? JSON.parse(storageObj.data) : storageObj.data;
 		else
 			return null;
 	};
