@@ -12,13 +12,14 @@
 			'ttl': Math.max(0, ttl||0),
 			'created': Date.now()
 		};
-		localStorage.setItem(key, JSON.stringify(storageObj));
+		// JSON.stringify function will generate stupid results if Array.prototype is extended with function toJSON() O_o
+		localStorage.setItem(key, this.myJSONstringifyObj(storageObj));
 	};
 	
 	LocalStorageHelper.getObject = function(key, version) {
 		var storageObj = JSON.parse(localStorage.getItem(key));
 		if (this.isValid(storageObj, version))
-			return (typeof storageObj.data === "string") ? JSON.parse(storageObj.data) : storageObj.data;
+			return storageObj.data;
 		else
 			return null;
 	};
@@ -42,5 +43,27 @@
 	
 	LocalStorageHelper.isUpToDate = function(key, ver) {
 		return LocalStorageHelper.getObject(key, ver) !== null;
+	}
+	
+	LocalStorageHelper.myJSONstringifyObj = function(obj) {
+	// http://www.sitepoint.com/javascript-json-serialization/
+
+	  var t = typeof (obj);
+	  if (t != "object" || obj === null) {
+		// simple data type
+		if (t == "string") obj = '"'+obj+'"';
+		return String(obj);
+	  }
+	  else {
+		// recurse array or object
+		var n, v, json = [], arr = (obj && obj.constructor == Array);
+		for (n in obj) {
+			v = obj[n]; t = typeof(v);
+			if (t == "string") v = '"'+v+'"';
+			else if (t == "object" && v !== null) v = JSON.stringify(v);
+			json.push((arr ? "" : '"' + n + '":') + String(v));
+		}
+		return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+	  }
 	}
 	

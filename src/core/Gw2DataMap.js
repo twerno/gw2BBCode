@@ -77,7 +77,9 @@
 
 				for (i = 0; i < gw2Global.lang_packs.length; i++) {
 					pack = resourceMgr.getResource(gw2Global.lang_packs[i]['url'], gw2Global.lang_packs[i]['ver']);
-					names = (typeof pack.names === "string") ? JSON.parse(pack.names) : pack.names;
+					if (typeof pack.names === "string")
+						throw new Error("JSON.parse() error");
+					names = pack.names;
 					for (j = 0; j < names.length; j++) {
 						currentItem = names[j];
 						if ((this.dataMap[currentItem[0]]||null) === null) {
