@@ -10,7 +10,7 @@
 		var dataMapName = 'Gw2DataMap';
 		var nameMapName = 'Gw2NameMap';
 		
-		this.init = function(resourceList) {
+		var init = function(resourceList) {
 			var i = 0;
 				
 			if (!resourceMgr.isUpToDate(gw2Global.main_pack['url'], gw2Global.main_pack['ver'])) {
@@ -25,7 +25,7 @@
 				}
 			}
 		}
-		this.init(resourceList);
+		init(resourceList);
 
 		this.findDataAndNameFor = function(bbCodeData) {
 			var dataObj = null;
@@ -60,6 +60,7 @@
 				var i, j,
 					pack = null,
 					currentItem,
+					names,
 					p;
 				
 				this.dataMap = {};
@@ -76,8 +77,9 @@
 
 				for (i = 0; i < gw2Global.lang_packs.length; i++) {
 					pack = resourceMgr.getResource(gw2Global.lang_packs[i]['url'], gw2Global.lang_packs[i]['ver']);
-					for (j = 0; j < pack.names.length; j++) {
-						currentItem = pack.names[j];
+					names = (typeof pack.names === "string") ? JSON.parse(pack.names) : pack.names;
+					for (j = 0; j < names.length; j++) {
+						currentItem = names[j];
 						if ((this.dataMap[currentItem[0]]||null) === null) {
 							console.log('ERROR: no data for id:{0}, name:{1} in langPack:{2}'.format(currentItem[0], currentItem[1], pack["lang"]));
 							this.dataMap[currentItem[0]] = {'id':currentItem[0], 'name':currentItem[1], 't':'?', 'names':{}};
