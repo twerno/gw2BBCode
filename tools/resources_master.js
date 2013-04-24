@@ -624,7 +624,7 @@ var gw2Elements = [
 	{id:2963, n:"Ice Wall", t:"s"},
 	{id:384, n:"Icy Bite", t:"s"},
 	{id:7282, n:"Icy Maul", t:"s"},
-	{id:2426, n:"Arcane Abatement", t:"tr", d:8, td:"Take 50% less damage from falling. Create a spell when you take falling damage, based on your attunement.<br>Fire: Ring of Fire<br>Water: Healing Wave<br>Air: Static Field<br>Earth: Earthquake"},
+	{id:2426, n:"Arcane Abatement", t:"tr", td:8, td:"Take 50% less damage from falling. Create a spell when you take falling damage, based on your attunement.<br>Fire: Ring of Fire<br>Water: Healing Wave<br>Air: Static Field<br>Earth: Earthquake"},
 	{id:7319, n:"Icy Pounce", t:"s"},
 	{id:1087, n:"Icy Roar", t:"s"},
 	{id:7539, n:"Icy Screech", t:"s"},

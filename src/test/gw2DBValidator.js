@@ -33,12 +33,13 @@
 		}
 		
 		this.validMacros = function(element) {
-			var i, p, dataObj;
+			var i, p, dataObj, mObj;
 			for (p in gw2DataMap.dataMap) {
 				dataObj = gw2DataMap.dataMap[p];
-				if (dataObj && dataObj['id'] && dataObj['id'] < 0) {
+				if (dataObj && dataObj['id'] && dataObj['id'] < 0 && dataObj['t'] === 'm') {
 					for (i = 0; i < dataObj['m'].length; i++) {
-						if (!gw2DataMap.dataMap[dataObj['m'][i]])
+						mObj = gw2DataMap.dataMap[dataObj['m'][i]]; 
+						if (!mObj || mObj['t'] !== 's')
 							element.innerHTML += "[ERROR] id: {0} name: {1} prof: {2} idx: {3} || No data for id: <A href='{4}'>{5}</a><br>".format(
 								dataObj['id'], dataObj['n'], dataObj['p'], i.toString(), gw2Global.gw2DB_PopupHost.format('skills', dataObj['id']), dataObj['m'][i]);
 					}
@@ -58,6 +59,27 @@
 				}
 			}
 			element.innerHTML += "DONE<BR>";
+		}
+		
+		this.validImgAvailability = function(resultElement) {
+			var p, dataObj, tag;
+			for (p in gw2DataMap.dataMap) {
+				dataObj = gw2DataMap.dataMap[p];
+				if (dataObj['t'] === 'm') 
+				  continue;
+
+				tag = document.createElement('img');
+				tag.gw2DataObj = dataObj;
+				tag.onerror = function(event) {
+				  resultElement.innerHTML += "[ERROR] no img for NAME={0} ID={1}  URL={2}<br>"
+					.format(event.srcElement.gw2DataObj['n'], 
+					        event.srcElement.gw2DataObj['id'],
+							event.srcElement.src);    
+				}
+				tag.src = Gw2BBCodeHelper.getImgUrl(gw2Global, dataObj);
+
+			}
+			resultElement.innerHTML += "DONE<BR>";
 		}
 			
 		var processNextTask = function() {
