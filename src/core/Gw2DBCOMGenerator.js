@@ -70,34 +70,14 @@
 
 		var getImgOrTextDesc = function(name, dataObj, bbCodeData) {
 			if (bbCodeData.showAsText)
-				return getImg(dataObj, bbCodeData, true) +name;
+				return getImgTag(dataObj, bbCodeData, true) +name;
 			else
-				return getImg(dataObj, bbCodeData, false);
+				return getImgTag(dataObj, bbCodeData, false);
 		}
 
-		var getImg = function(dataObj, bbCodeData, small) {
-			var id       = dataObj['id'],
-				prof     = dataObj['p']||"",
-			    type     = dataObj['t'],
-			    traitIdx = dataObj['ti'],
-				gw2db    = dataObj['gw2db']||0,
-				folder   = gw2Global.types_names[type],
-				imgTag   = '';
-
-			if (gw2db !== 0)
-				id = gw2db;
-				
-			if ((folder||"") === "")
-				throw new Error("Undefined img folder for type:" +type +" !");
-
-			imgTag = "<img src='{0}/{1}/{2}.png'" + (small ? " style='width:18px;height:18px;vertical-align:text-bottom;'" : "") +">";
-				
-			if (type === 'tr' && (prof === "" || traitIdx === 0)) 
-				return imgTag.format(gw2Global.imagesUrl, folder, traitIdx); /*trait image*/
-			else if (type === 'tr' && prof !== "" && traitIdx === 0)
-				return imgTag.format(gw2Global.imagesUrl, folder, prof); /*trait image*/
-			else
-				return imgTag.format(gw2Global.imagesUrl, folder, id);
+		var getImgTag = function(dataObj, bbCodeData, small) {
+			return ("<img src='{0}'" + (small ? " style='width:18px;height:18px;vertical-align:text-bottom;'" : "") +">")
+				.format(Gw2BBCodeHelper.getImgUrl(gw2Global, dataObj));
 		};
 
 		var getNameFrom = function(dataObj, preferredLang, mainLang) {
