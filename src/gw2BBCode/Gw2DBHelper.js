@@ -18,3 +18,12 @@
 	Gw2DBHelper.getUniqID = function(dataObj) {
 		return dataObj['t'] +"-" +Gw2DBHelper.getGw2DBID(dataObj);
 	}
+	
+	Gw2DBHelper.getGw2DBTooltipUrl = function(gw2Global, type, gw2DBID) {
+		return gw2Global.gw2DB_PopupHost.format(type, gw2DBID);
+	}
+	
+	Gw2DBHelper.getTooltipContent = function(name, text) {
+		return {'Tooltip': "<div class='db-tooltip db-tooltip-skill p-tooltip_gw2'><div class='db-description'><dl class='db-summary'><dt class='db-title'>{0}</dt><dd class='db-skill-description'>{1}</dd></dl></div></div>"
+		  .format(name, text)};
+	}

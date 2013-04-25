@@ -5,7 +5,7 @@
 		var resourceManager = resourceManager;
 		
 		this.getMatchFor = function(dispatcher) {
-			return /gw2DB_(skills|tasks|traits|items|recipes|achievements|creatures|boons|conditions|guildupgrades)_(\d+)/.exec( 
+			return /gw2DB_(skills|tasks|traits|items|recipes|achievements|creatures|boons|conditions|guildupgrades)_(\-?\d+)/.exec( 
 				dispatcher.getAttribute('class').toString() );
 		}
 		
@@ -14,7 +14,7 @@
 		}
 	
 		this.loadData = function(dispatcher, tooltipMgr, match) {
-			var url = gw2Global.gw2DB_PopupHost.format(match[1], match[2]),
+			var url = Gw2DBHelper.getGw2DBTooltipUrl(gw2Global, match[1], match[2]),
 			    data_fromCache = resourceManager.getResource(url, 1);
 		
 			if (data_fromCache !== null) {
@@ -27,7 +27,7 @@
 				});
 			}
 		}
-		
+
 		var formatResult = function(data) {
 			return data["Tooltip"]
 				.replace(/<div class="db-image">\s+<img src=".*?\/>\s+<\/div>/g, "")

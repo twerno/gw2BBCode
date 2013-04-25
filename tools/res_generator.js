@@ -6,7 +6,8 @@
 		gw2Elements.sort(compare);
 		var newArr = [];
 		for (var i = 0; i < gw2Elements.length; i++) {
-			newArr.push( copyObj(gw2Elements[i], ['id', 't', 'ti', 'td', 'm', 'p', 'n', 'st', 'gw2db']) );
+			//newArr.push( copyObj(gw2Elements[i], ['id', 't', 'ti', 'td', 'm', 'p', 'n', 'st', 'gw2db']) );
+			newArr.push( copyObj(gw2Elements[i], ['id', 't', 'ti', 'tc', 'm', 'p', 'n', 'st', 'gw2db']) );
 		}
 		document.write(JSON.stringify(newArr));
 	}

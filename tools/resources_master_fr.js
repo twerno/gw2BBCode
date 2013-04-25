@@ -1222,6 +1222,7 @@ var gw2Elements =
 {id:2260,n:"Piercing Shards",t:"tr",d:4,td:"While attuned to water, your spells deal 20% more damage to vulnerable foes."},
 {id:1719,n:"Pistol Mastery",t:"tr",d:5,td:"+5% damage with pistols."},
 {id:-509,n:"Poison",t:"co"},
+{id:-1000, n:"Agony", t:"co", gw2db:-1, tc:"Deals damage every three seconds; stacks intensity."},
 {id:2146,n:"Poison Barbs",t:"s"},
 {id:7280,n:"Poison Cloud",t:"s"},
 {id:7367,n:"Poison Cloud",t:"s"},

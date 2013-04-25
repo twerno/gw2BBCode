@@ -81,6 +81,11 @@
 					this.dataMap[uniqID] = currentItem;
 					this.nameMap[getArrayIDFor(currentItem['n'])] = this.nameMap[getArrayIDFor(currentItem['n'])]||[];
 					this.nameMap[getArrayIDFor(currentItem['n'])].push({'id':uniqID, 'n':currentItem['n'], 'lang':'en', 'data':currentItem});
+					
+					if ((currentItem['tc']||"") !== "") {
+						resourceMgr.putResource(Gw2DBHelper.getGw2DBTooltipUrl(gw2Global, gw2Global.types_names[currentItem['t']], Gw2DBHelper.getGw2DBID(currentItem)),
+						                        Gw2DBHelper.getTooltipContent(currentItem['n'], currentItem['tc']));
+					}
 				}
 
 				for (i = 0; i < gw2Global.lang_packs.length; i++) {

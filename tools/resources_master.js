@@ -904,6 +904,7 @@ var gw2Elements = [
 	{id:466, n:"Plague Signet", t:"s"},
 	{id:7506, n:"Point Blank Shot", t:"s"},
 	{id:-509, n:"Poison", t:"co", gw2db:9},
+	{id:-1000, n:"Agony", t:"co", gw2db:-1, tc:"Deals damage every three seconds; stacks intensity."},
 	{id:2146, n:"Poison Barbs", t:"s"},
 	{id:7280, n:"Poison Cloud", t:"s"},
 	{id:7367, n:"Poison Cloud", t:"s"},
