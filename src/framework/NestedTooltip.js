@@ -110,18 +110,25 @@
 		}
 		
 		var calculateTooltipPosition = function() {
-			var newTop, newLeft;
+			var newTop, newLeft, node, jQNode, 
+			    jQWin = jQuery(window),
+				jQTooltip = jQuery(tooltip);
+			
+			node = self.dispatcher.childNodes[0]; // <img...
+			if ((node||null) === null)
+				node = self.dispatcher; // <A...
+			jQNode = jQuery(node);
 
-			newTop = Math.max(1, jQuery(self.dispatcher).offset().top +jQuery(self.dispatcher).height() -3);
-			if (newTop > jQuery(window).height() +jQuery(window).scrollTop() -jQuery(tooltip).outerHeight() -5)
-				newTop = jQuery(self.dispatcher).offset().top +jQuery(self.dispatcher).height() -computeHeightOf(self.dispatcher) -jQuery(tooltip).outerHeight() -5;
+			newTop = Math.max(1, jQNode.offset().top +jQNode.height() +1);
+			if (newTop > jQWin.height() +jQWin.scrollTop() -jQTooltip.outerHeight() -1)
+				newTop = jQNode.offset().top +jQNode.height() -computeHeightOf(node) -jQTooltip.outerHeight() -1;
 				
-			newLeft = jQuery(self.dispatcher).offset().left;
-			if (newLeft > jQuery(window).width() +jQuery(window).scrollLeft() -367)
-				newLeft =  jQuery(self.dispatcher).offset().left +jQuery(self.dispatcher).outerWidth() -367;
+			newLeft = jQNode.offset().left;
+			if (newLeft > jQWin.width() +jQWin.scrollLeft() -367)
+				newLeft =  jQNode.offset().left +jQNode.outerWidth() -367;
 
-			jQuery(tooltip).css("top", newTop +"px");
-			jQuery(tooltip).css("left", newLeft +"px");
+			jQTooltip.css("top", newTop +"px");
+			jQTooltip.css("left", newLeft +"px");
 		}
 		
 		var computeHeightOf = function(element) {
