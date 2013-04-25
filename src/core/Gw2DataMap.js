@@ -61,7 +61,8 @@
 					pack = null,
 					currentItem,
 					names,
-					p;
+					p,
+					uniqID;
 				
 				this.dataMap = {};
 				this.nameMap = {};
@@ -70,9 +71,16 @@
 				for (i = 0; i < pack.length; i++) {
 					currentItem = pack[i];
 					currentItem['names'] = {'en':currentItem['n']};
-					this.dataMap[currentItem['id']] = currentItem;
+					
+					uniqID = Gw2DBHelper.getUniqID(currentItem);
+					currentItem['uniqID'] = uniqID;
+					
+					if (this.dataMap[uniqID])
+						console.log("Powtórzony uniqID=" +uniqID);
+					
+					this.dataMap[uniqID] = currentItem;
 					this.nameMap[getArrayIDFor(currentItem['n'])] = this.nameMap[getArrayIDFor(currentItem['n'])]||[];
-					this.nameMap[getArrayIDFor(currentItem['n'])].push({'id':currentItem['id'], 'n':currentItem['n'], 'lang':'en', 'data':currentItem});
+					this.nameMap[getArrayIDFor(currentItem['n'])].push({'id':uniqID, 'n':currentItem['n'], 'lang':'en', 'data':currentItem});
 				}
 
 				for (i = 0; i < gw2Global.lang_packs.length; i++) {
@@ -84,7 +92,8 @@
 						currentItem = names[j];
 						if ((this.dataMap[currentItem[0]]||null) === null) {
 							console.log('ERROR: no data for id:{0}, name:{1} in langPack:{2}'.format(currentItem[0], currentItem[1], pack["lang"]));
-							this.dataMap[currentItem[0]] = {'id':currentItem[0], 'name':currentItem[1], 't':'?', 'names':{}};
+							continue;
+							//this.dataMap[currentItem[0]] = {'id':currentItem[0], 'name':currentItem[1], 't':'?', 'names':{}};
 						}
 
 						this.nameMap[getArrayIDFor(currentItem[1])] = this.nameMap[getArrayIDFor(currentItem[1])]||[];

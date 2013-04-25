@@ -41,7 +41,7 @@
 						mObj = gw2DataMap.dataMap[dataObj['m'][i]]; 
 						if (!mObj || mObj['t'] !== 's')
 							element.innerHTML += "[ERROR] id: {0} name: {1} prof: {2} idx: {3} || No data for id: <A href='{4}'>{5}</a><br>".format(
-								dataObj['id'], dataObj['n'], dataObj['p'], i.toString(), gw2Global.gw2DB_PopupHost.format('skills', dataObj['id']), dataObj['m'][i]);
+								dataObj['id'], dataObj['n'], dataObj['p'], (i+1).toString(), gw2Global.gw2DB_PopupHost.format('skills', dataObj['id']), dataObj['m'][i]);
 					}
 				}
 			}
@@ -71,10 +71,13 @@
 				tag = document.createElement('img');
 				tag.gw2DataObj = dataObj;
 				tag.onerror = function(event) {
-				  resultElement.innerHTML += "[ERROR] no img for NAME={0} ID={1}  URL={2}<br>"
+				  resultElement.innerHTML += "[ERROR] no img for NAME={0} ID={1} URL=<A HREF='{2}'>{2}</a> <A HREF='{3}'>gw2DB</A><br>"
 					.format(event.srcElement.gw2DataObj['n'], 
 					        event.srcElement.gw2DataObj['id'],
-							event.srcElement.src);    
+							event.srcElement.src,
+							"{0}/{1}/{2}".format(gw2Global.gw2DBUrl, 
+							                     gw2Global.types_names[event.srcElement.gw2DataObj['t']], 
+												 event.srcElement.gw2DataObj['id']));    
 				}
 				tag.src = Gw2BBCodeHelper.getImgUrl(gw2Global, dataObj);
 

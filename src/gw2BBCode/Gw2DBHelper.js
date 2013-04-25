@@ -14,3 +14,7 @@
 			}
 		return result;	
 	}
+	
+	Gw2DBHelper.getUniqID = function(dataObj) {
+		return dataObj['t'] +"-" +Gw2DBHelper.getGw2DBID(dataObj);
+	}

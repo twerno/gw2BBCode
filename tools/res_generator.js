@@ -10,7 +10,7 @@
 		}
 		document.write(JSON.stringify(newArr));
 	}
-	
+
 	function sortNPrint2() {
 		gw2Elements.sort(compare);
 		var newArr = [];
@@ -19,12 +19,12 @@
 		}
 		document.write(JSON.stringify({names:newArr,dicts:{'stance':stances, prof:prow_s, types:type}}));
 	}
-	
+
 	function sortNPrint3() {
 		gw2Elements.sort(compare);
 		var newArr = [];
 		for (var i = 0; i < gw2Elements.length; i++) {
-			newArr.push( [gw2Elements[i].id, gw2Elements[i].n] );
+			newArr.push( [Gw2DBHelper.getUniqID(gw2Elements[i]), gw2Elements[i].n] );
 		}
 		document.write(JSON.stringify({lang:'fr',names:newArr,dicts:{'stance':stances, prof:prow_s, types:type}}));
 	}
@@ -42,6 +42,11 @@
 		var result = new Object();
 		for (var i = 0; i < element.length; i++) {
 			result[element[i]] = (typeof(source[element[i]]) === "string") ? source[element[i]].replace(/</g, '&lt;').replace(/>/g, '&gt') : source[element[i]];
+			
+			if (element[i] === 'm' && (result['m']||null) !== null) {
+			  for (var j = 0; j < result['m'].length; j++)
+				result['m'][j] = 's-' +result['m'][j];
+			}
 		}
 		return result;
 	}
