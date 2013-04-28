@@ -27,7 +27,7 @@
 		var getBBCodeForItem = function(entry, bbCodeData) {
 			var dataObj = entry.dataObj, 
 				name    = getNameFrom(dataObj, entry.nameObj['lang'], 'en');
-			return generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) );
+			return generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData), dataObj );
 		}
 		
 		var getBBCodeForMacro = function(entry, bbCodeData) {
@@ -40,7 +40,7 @@
 				name = getNameFrom(dataObj, entry.nameObj['lang'], 'en');
 
 				tmpArr.push(
-					generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData) )
+					generateBBCodeFor( dataObj['id'], Gw2DBHelper.getGw2DBID(dataObj), name, dataObj['t'], getImgOrTextDesc(name, dataObj, bbCodeData), dataObj )
 				);
 			}
 
@@ -50,16 +50,16 @@
 			return result;	
 		}
 		
-		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc) {
+		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc, dataObj) {
 			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2} gw2BBCodeID_{3}'>{4}</a>")
-				.format(getGoToUrl(gw2dbId, name, type), gw2Global.types_names[type], gw2dbId, id, imgOrTextDesc);
+				.format(getGoToUrl(name, dataObj), gw2Global.types_names[type], gw2dbId, id, imgOrTextDesc);
 		}
 		
-		var getGoToUrl = function (id, name, type) {
+		var getGoToUrl = function (name, dataObj) {
 			if (gw2Global.onClickGoTo === 'gw2Wiki')
 				return "{0}/{1}".format(gw2Global.gw2WikiUrl, get_wikiElement_name(name));
 			else if (gw2Global.onClickGoTo === 'gw2DB')
-				return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, gw2Global.types_names[type], id);
+				return Gw2DBHelper.gw2DBItemUrl(gw2Global, dataObj)
 			else
 				return "#";
 		}

@@ -16,10 +16,10 @@
 		if (gw2db !== 0)
 			id = gw2db;			
 			
-		if (type === 'tr' && (prof === "" || traitIdx === 0)) 
+		if (type === 'tr' && prof !== "" && traitIdx === 0)
+			return "{0}/{1}/{2}.png".format(gw2Global.imagesUrl, folder, prof.toLowerCase()); /*trait image*/
+		if (type === 'tr') 
 			return "{0}/{1}/{2}.png".format(gw2Global.imagesUrl, folder, traitIdx); /*trait image*/
-		else if (type === 'tr' && prof !== "" && traitIdx === 0)
-			return "{0}/{1}/{2}.png".format(gw2Global.imagesUrl, folder, prof); /*trait image*/
 		else
 			return "{0}/{1}/{2}.png".format(gw2Global.imagesUrl, folder, id);
 	}

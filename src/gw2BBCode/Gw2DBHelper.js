@@ -27,3 +27,7 @@
 		return {'Tooltip': "<div class='db-tooltip db-tooltip-skill p-tooltip_gw2'><div class='db-description'><dl class='db-summary'><dt class='db-title'>{0}</dt><dd class='db-skill-description'>{1}</dd></dl></div></div>"
 		  .format(name, text)};
 	}
+	
+	Gw2DBHelper.gw2DBItemUrl = function(gw2Global, dataObj) {
+		return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, gw2Global.types_names[dataObj['t']], dataObj['id']);
+	}

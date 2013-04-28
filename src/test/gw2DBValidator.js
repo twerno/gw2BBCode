@@ -84,6 +84,18 @@
 			}
 			resultElement.innerHTML += "DONE<BR>";
 		}
+		
+		this.traitWithoutProf = function(resultElement) {
+			var p, dataObj, tag;
+			for (p in gw2DataMap.dataMap) {
+				dataObj = gw2DataMap.dataMap[p];
+				if (dataObj['t'] === 'tr' && dataObj['ti'] === 0 && dataObj['p'] === undefined) 
+				  resultElement.innerHTML += "[ERROR] no prof for NAME={0} ID={1} URL=<A HREF='{2}'>gw2DB</a><br>"
+					.format(dataObj['n'], 
+					        dataObj['id'],
+							Gw2DBHelper.gw2DBItemUrl(gw2Global, dataObj));
+			}
+		}
 			
 		var processNextTask = function() {
 			if (i < tasks.length ) {
