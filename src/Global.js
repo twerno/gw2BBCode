@@ -7,7 +7,7 @@
 		this.popup_cssURL = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/tooltip.css";
 		this.gw2_cssURL   = "https://s3-eu-west-1.amazonaws.com/gw2bbcode.pl/NEXT/gw2BBCode.css";
 
-		this.main_pack      = {'url':this.contentUrl+'main_resource_pack.json', 'ver':6};
+		this.main_pack      = {'url':this.contentUrl+'main_resource_pack.json', 'ver':7};
 		this.lang_packs     = [{'url':this.contentUrl+'lang_pack_fr.json', 'ver':3, 'lang':'fr'}];
 		
 		this.gw2WikiUrl      = "http://wiki.guildwars2.com/wiki";
