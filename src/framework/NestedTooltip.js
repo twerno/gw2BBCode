@@ -115,7 +115,7 @@
 				jQTooltip = jQuery(tooltip);
 			
 			node = self.dispatcher.childNodes[0]; // <img...
-			if ((node||null) === null)
+			if ((node||null) === null || node.nodeType === 3)
 				node = self.dispatcher; // <A...
 			jQNode = jQuery(node);
 
