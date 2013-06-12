@@ -16,7 +16,7 @@
 	}
 	
 	Gw2DBHelper.getUniqID = function(dataObj) {
-		return dataObj['t'] +"-" +Gw2DBHelper.getGw2DBID(dataObj);
+		return dataObj['t'] +"-" +dataObj['id'];
 	}
 	
 	Gw2DBHelper.getGw2DBTooltipUrl = function(gw2Global, type, gw2DBID) {
