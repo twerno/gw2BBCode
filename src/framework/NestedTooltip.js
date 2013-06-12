@@ -11,11 +11,11 @@
 			parentTooltip.childTooltip = this;
 		}
 		
-		var self                  = this;
-		var tooltip               = null;
-		var timeout               = 0;
-		var isMouseOverTooltip    = false;
-		var isMouseOverDispatcher = false;
+		var self                   = this;
+		var tooltip                = null;
+		var timeout                = 0;
+		var isCursorOverTooltip    = false;
+		var isCursorOverDispatcher = false;
 		this.hidden                = false;
 
 		var onHiding              = onHiding;
@@ -23,7 +23,23 @@
 		var activeStatusChanged   = activeStatusChanged;
 
 		this.isActive = function() {
-			return (isMouseOverTooltip || isMouseOverDispatcher) && !this.hidden;/*&& !this.isHidding()*/;
+			return (isCursorOverTooltip || isCursorOverDispatcher) && !this.hidden;/*&& !this.isHidding()*/;
+		}
+		
+		this.setActive = function(mouseX, mouseY) {
+			var activeElement      = document.elementFromPoint(mouseX, mouseY);
+			isCursorOverTooltip    = isCursorOverElement(activeElement, tooltip);
+			isCursorOverDispatcher = isCursorOverElement(activeElement, this.dispatcher);
+		}
+		
+		var isCursorOverElement = function(activeElement, element) {
+			if (activeElement === element)
+				return true;
+			for (var i = 0; i < element.childNodes.length; i++) {
+				if (isCursorOverElement(activeElement, element.childNodes[i]))
+					return true;
+			}
+			return false;
 		}
 
 		this.setContent = function(content) {
@@ -33,9 +49,10 @@
 		this.isHidding = function() {
 			return timeout !== 0;
 		}
-		
+
 		this.stopHiding = function() {
 			clearTimeout(timeout);
+			timeout = 0;
 			if (this.parentTooltip !== null)
 				this.parentTooltip.stopHiding();
 		}
@@ -45,8 +62,8 @@
 			if (tooltip === null) {
 				registerTooltip();
 				registerEvents();
-				isMouseOverDispatcher = true;
-				isMouseOverTooltip    = false;
+				isCursorOverDispatcher = true;
+				isCursorOverTooltip    = false;
 			}
 			jQuery(tooltip).css('display', 'none');
 			jQuery(tooltip).css('z-index', this.zindex);
@@ -65,6 +82,7 @@
 		
 		this.hideNow = function() {
 			clearTimeout(timeout);
+			timeout = 0;
 			hideChild();
 			unregisterEvents();
 			unregisterTooltip();
@@ -100,13 +118,17 @@
 			jQuery(self.dispatcher).mouseleave(onDispatcherMouseOut);
 			jQuery(tooltip).mouseenter(onTooltipMouseOver);
 			jQuery(tooltip).mouseleave(onTooltipMouseOut);
+			jQuery(tooltip).click(onTooltipClick);
+			jQuery(self.dispatcher).click(onDispatcherClick);
 		}
 		
 		var unregisterEvents = function() {
 			jQuery(self.dispatcher).unbind('mouseenter', onDispatcherMouseOver);
 			jQuery(self.dispatcher).unbind('mouseleave', onDispatcherMouseOut);
+			jQuery(self.dispatcher).unbind('click', onDispatcherClick);
 			jQuery(tooltip).unbind('mouseenter', onTooltipMouseOver);
 			jQuery(tooltip).unbind('mouseleave', onTooltipMouseOut);
+			jQuery(tooltip).unbind('click', onTooltipClick);
 		}
 		
 		var calculateTooltipPosition = function() {
@@ -140,26 +162,40 @@
 		}
 
 		var onDispatcherMouseOver = function() {
-			isMouseOverDispatcher = true;
+			isCursorOverDispatcher = true;
 			self.stopHiding();
 			activeStatusChanged(self);
 		}
 
 		var onDispatcherMouseOut = function() {
-			isMouseOverDispatcher = false;
+			isCursorOverDispatcher = false;
 			self.hideIn(150);
 			activeStatusChanged(self);
 		}
 
 		var onTooltipMouseOver = function() {
-			isMouseOverTooltip = true;
+			isCursorOverTooltip = true;
 			self.stopHiding();
 			activeStatusChanged(self);
 		}
 
 		var onTooltipMouseOut = function() {
-			isMouseOverTooltip = false;
+			isCursorOverTooltip = false;
 			self.hideIn(150);
 			activeStatusChanged(self);
 		}
+		
+		var onTooltipClick = function() {
+			isCursorOverTooltip = true;
+			if (self.isHidding())
+				self.stopHiding();
+		}
+		
+		var onDispatcherClick = function() {
+			isCursorOverDispatcher = true;
+			if (self.isHidding())
+				self.stopHiding();
+		}
+		
+		
 	}
