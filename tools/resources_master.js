@@ -118,6 +118,7 @@ var gw2Elements = [
 	{id:3361, n:"Blinding Powder", t:"s"},
 	{id:7581, n:"Blinding Slash", t:"s"},
 	{id:-505, n:"Blindness", t:"co", gw2db:5},
+	{id:-512, n:"Blind", t:"co", gw2db:5},
 	{id:4088, n:"Blink", t:"s"},
 	{id:13024, n:"Blood Curse", t:"s"},
 	{id:2188, n:"Blood Injection", t:"tr", ti:5, td:"5% of vitality is converted into condition damage."},
@@ -1491,6 +1492,10 @@ var gw2Elements = [
 	{id:2246, n:"Zephyr's Focus", t:"tr", ti:2, td:"Your endurance regenerates 100% faster while channeling skills."},
 	{id:1614, n:"Zephyr's Speed", t:"tr", ti:0, td:"Move 10% faster while attuned to air.", 'p':'El'},
 	{id:2388, n:"Zephyr's Speed", t:"tr", ti:0, td:"You and your pet gain 2 seconds of quickness when you swap pets.", 'p':'En'},
+	{id:6323, n:"Withering Plague", t:"s"},
+	{id:6234, n:"Plague of Pestilence", t:"s"},
+	{id:6233, n:"Plague of Darkness", t:"s"},
+
 	{id:-1, n:"Dagger/Dagger", m:[328,4242,1175,1179,6204], t:"m", st:"air", 'p':'El'},
 	{id:-2, n:"Dagger/Dagger", m:[17118,1173,1859,6207,1166], t:"m", st:"earth", 'p':'El'},
 	{id:-3, n:"Dagger/Dagger", m:[1172,523,4239,6208,1857], t:"m", st:"fire", 'p':'El'},
