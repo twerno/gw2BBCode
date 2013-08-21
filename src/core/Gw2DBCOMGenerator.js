@@ -51,10 +51,22 @@
 		}
 		
 		var generateBBCodeFor = function(id, gw2dbId, name, type, imgOrTextDesc, dataObj) {
+			if (jQuery.browser.mobile)
+				return generateBBCodeForMobile(id, gw2dbId, name, type, imgOrTextDesc, dataObj) 
+			else
+				return generateBBCodeForDesktop(id, gw2dbId, name, type, imgOrTextDesc, dataObj);
+		}
+		
+		var generateBBCodeForDesktop = function(id, gw2dbId, name, type, imgOrTextDesc, dataObj) {
+			return ("<a href='{0}' class='gw2DBTooltip gw2DB_{1}_{2} gw2BBCodeID_{3}'>{4}</a>")
+				.format(getGoToUrl(name, dataObj), gw2Global.types_names[type], gw2dbId, id, imgOrTextDesc);
+		}
+
+		var generateBBCodeForMobile = function(id, gw2dbId, name, type, imgOrTextDesc, dataObj) {
 			return ("<a href='javascript:void(0);' url='{0}' class='gw2DB_touchFriendly gw2DBTooltip gw2DB_{1}_{2} gw2BBCodeID_{3}'>{4}</a>")
 				.format(getGoToUrl(name, dataObj), gw2Global.types_names[type], gw2dbId, id, imgOrTextDesc);
 		}
-		
+
 		var getGoToUrl = function (name, dataObj) {
 			if (gw2Global.onClickGoTo === 'gw2Wiki')
 				return "{0}/{1}".format(gw2Global.gw2WikiUrl, get_wikiElement_name(name));
@@ -90,7 +102,7 @@
 
 		var weaponSwapWrapper = function(content1, content2) {
 			var tnSet2 = (content2||"") !== "";
-			
+
 			return "<div class='gw2BBCode_weaponSetWraper'>{0}<div class='gw2BBCode_weaponSet'>{1}</div>{2}</div>"
 				.format(tnSet2 ? "<div class='gw2BBCode_weaponSwap'></div>" : "",
 				        content1,

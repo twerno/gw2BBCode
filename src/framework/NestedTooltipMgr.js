@@ -82,9 +82,9 @@
 					tooltipContentObj.loadData(eventObject.currentTarget, self, match);
 				} else
 					openNewWindow(eventObject.currentTarget.getAttribute('url'));
-			} else {
+			} /*else {
 				openNewWindow(eventObject.currentTarget.getAttribute('href'));
-			}
+			}*/
 		}
 		
 		var hideAllButActive = function() {

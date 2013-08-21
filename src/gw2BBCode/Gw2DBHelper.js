@@ -29,5 +29,12 @@
 	}
 	
 	Gw2DBHelper.gw2DBItemUrl = function(gw2Global, dataObj) {
-		return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, gw2Global.types_names[dataObj['t']], dataObj['id']);
+		var gw2ItemID = Gw2DBHelper.getGw2DBID(dataObj);
+
+		if (gw2ItemID === -1)
+			return '#'
+		else	
+			return "{0}/{1}/{2}".format(gw2Global.gw2DBUrl, 
+										gw2Global.types_names[dataObj['t']], 
+										gw2ItemID);
 	}
