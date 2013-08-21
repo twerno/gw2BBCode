@@ -1492,7 +1492,7 @@ var gw2Elements = [
 	{id:2246, n:"Zephyr's Focus", t:"tr", ti:2, td:"Your endurance regenerates 100% faster while channeling skills."},
 	{id:1614, n:"Zephyr's Speed", t:"tr", ti:0, td:"Move 10% faster while attuned to air.", 'p':'El'},
 	{id:2388, n:"Zephyr's Speed", t:"tr", ti:0, td:"You and your pet gain 2 seconds of quickness when you swap pets.", 'p':'En'},
-	{id:6323, n:"Withering Plague", t:"s"},
+	{id:6232, n:"Withering Plague", t:"s"},
 	{id:6234, n:"Plague of Pestilence", t:"s"},
 	{id:6233, n:"Plague of Darkness", t:"s"},
 
